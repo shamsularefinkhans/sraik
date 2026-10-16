@@ -101,11 +101,14 @@
 		};
 		panel.addEventListener('transitionend', done);
 	}
-	/* Deep link: /faq/#q-12 opens that question. */
-	if (location.hash) {
-		var target = d.getElementById(location.hash.slice(1));
+	/* Deep link: /faq/#q-12 opens that question — on load and on in-page jumps. */
+	function openFromHash() {
+		if (!location.hash) { return; }
+		var target = d.getElementById(decodeURIComponent(location.hash.slice(1)));
 		if (target && target.hasAttribute('data-acc-item') && !target.classList.contains('is-open')) { toggle(target, true); }
 	}
+	openFromHash();
+	w.addEventListener('hashchange', openFromHash);
 
 	/* ---------- tabs ---------- */
 	$$('[data-tabs]').forEach(function (set) {
@@ -225,6 +228,7 @@
 			e.preventDefault();
 			lenis.scrollTo(el, { offset: -88 });
 			history.replaceState(null, '', url.hash);
+			openFromHash();
 		});
 	}
 	if (w.Lenis) { startLenis(); } else { w.addEventListener('load', startLenis); }

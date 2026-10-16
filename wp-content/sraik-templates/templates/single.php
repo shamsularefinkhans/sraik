@@ -67,10 +67,19 @@ while ( have_posts() ) :
     <section class="sp-body">
       <div class="sp-body-in">
         <div class="prose">
-          <?php if ( $sp_locked ) : ?>
-          <p><?php echo esc_html( $c['single']['protected'] ); ?></p>
-          <?php endif; ?>
-          <?php the_content(); ?>
+          <?php
+          if ( $sp_locked ) {
+            /* WordPress's own form, with its English intro line swapped for ours. */
+            $sp_msg = $c['single']['protected'];
+            add_filter(
+              'the_password_form',
+              function ( $form ) use ( $sp_msg ) {
+                return preg_replace( '#<p>.*?</p>#s', '<p>' . esc_html( $sp_msg ) . '</p>', $form, 1 );
+              }
+            );
+          }
+          the_content();
+          ?>
         </div>
         <?php
         wp_link_pages(

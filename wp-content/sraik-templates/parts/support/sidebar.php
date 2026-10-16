@@ -19,15 +19,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     </span>
   </div>
   <nav class="hc-toc" data-toc aria-label="<?php echo esc_attr( $s['title'] ); ?>">
-    <?php foreach ( $s['groups'] as $gi => $g ) : ?>
+    <?php foreach ( $s['groups'] as $g ) : ?>
     <div class="hc-toc-grp">
       <span class="hc-toc-l"><?php echo esc_html( $g['label'] ); ?></span>
       <div class="hc-toc-list">
         <?php
-        foreach ( $g['links'] as $li => $l ) :
+        foreach ( $g['links'] as $l ) :
 			$ext = ! empty( $l[2] );
 			?>
-        <a href="<?php echo esc_url( sraik_hc_href( $l[1] ) ); ?>"<?php echo 0 === $gi && 0 === $li ? ' class="is-active"' : ''; ?>><?php echo esc_html( $l[0] ); ?><?php echo $ext ? sraik_icon( 'arrow-up-right', 12, 2 ) : ''; // phpcs:ignore ?></a>
+        <a href="<?php echo esc_url( sraik_hc_href( $l[1] ) ); ?>"><?php echo esc_html( $l[0] ); ?><?php echo $ext ? sraik_icon( 'arrow-up-right', 12, 2 ) : ''; // phpcs:ignore ?></a>
         <?php endforeach; ?>
       </div>
     </div>

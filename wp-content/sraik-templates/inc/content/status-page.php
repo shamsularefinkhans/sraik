@@ -52,8 +52,8 @@ return array(
 	'perf_title' => 'Performance · last 24 hours',
 	/* The two charts: component key from inc/status.php + label. */
 	'charts'     => array(
-		'site' => 'sraik.com response time',
-		'lms'  => 'vip.sraik.com response time',
+		'site' => 'sraik.com',
+		'lms'  => 'vip.sraik.com',
 	),
 	'perf_empty' => 'Collecting samples — the chart appears after the next checks.',
 

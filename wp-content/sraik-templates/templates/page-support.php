@@ -19,11 +19,13 @@ $c = sraik_content( 'support' );
  * A link target from the copy: '#anchor', '/path/', a full URL, or a
  * config url key ('whatsapp', 'dashboard' …).
  */
-function sraik_hc_href( $h ) {
-	if ( preg_match( '#^(\#|/|https?:|mailto:|tel:)#', $h ) ) {
-		return sraik_href( $h );
+if ( ! function_exists( 'sraik_hc_href' ) ) {
+	function sraik_hc_href( $h ) {
+		if ( preg_match( '#^(\#|/|https?:|mailto:|tel:)#', $h ) ) {
+			return sraik_href( $h );
+		}
+		return sraik_url( $h );
 	}
-	return sraik_url( $h );
 }
 
 sraik_page_css( array( 'css/support.css' ) );

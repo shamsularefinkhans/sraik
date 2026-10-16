@@ -1,0 +1,7 @@
+# dev tooling
+tools/node_modules
+node_modules/
+# Student screenshots live on the server only (assets/wa-proof/*.jpg …).
+wp-content/sraik-templates/assets/wa-proof/*
+!wp-content/sraik-templates/assets/wa-proof/index.php
+.DS_Store

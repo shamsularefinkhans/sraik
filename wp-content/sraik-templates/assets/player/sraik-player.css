@@ -1,0 +1,850 @@
+/*!
+ * SRAIK Player 1.3.0 — obsidian / crimson.
+ * No clamp(): LiteSpeed's optimizer mangles it on this site.
+ */
+
+/* ─────────────── frame ─────────────── */
+
+.sraik-player {
+	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	margin: 0;
+	padding: 0;
+	background: #000;
+	color: #fff;
+	overflow: hidden;
+	isolation: isolate;
+	container-type: inline-size;
+	font-family: var(--tutor-font-family-body, var(--font-body, "Bricolage Grotesque", "Anek Bangla", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif));
+	font-size: 14px;
+	line-height: 1.2;
+	text-align: left;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+	outline: none;
+}
+
+@supports not (aspect-ratio: 16 / 9) {
+	.sraik-player { height: 0; padding-top: 56.25%; }
+	.sraik-player.sp-fs { height: 100%; padding-top: 0; }
+}
+
+.sraik-player *,
+.sraik-player *::before,
+.sraik-player *::after {
+	box-sizing: border-box;
+}
+
+.sraik-player:focus { outline: none; }
+.sraik-player:focus-visible { outline: 2px solid #C8102E; outline-offset: -2px; }
+
+/* ─────────────── layers (bottom → top) ─────────────── */
+
+.sraik-player .sp-stage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: #000;
+}
+
+.sraik-player .sp-media {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background: #000;
+}
+
+/*
+ * Branding crop — identical geometry to Tutor Pro's
+ * `.plyr--youtube iframe { top:-50%; height:200% }`.
+ * The frame is 2x the stage height, shifted up by half: YouTube centres the
+ * 16:9 picture exactly inside the stage and its title bar / logo / share /
+ * more-videos fall in the two bands the stage clips off.
+ */
+.sraik-player .sp-media iframe,
+.sraik-player .sp-media .sp-yt {
+	position: absolute !important;
+	left: 0 !important;
+	top: -50% !important;
+	right: auto !important;
+	bottom: auto !important;
+	border-radius: 0 !important;
+	width: 100% !important;
+	height: 200% !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	transform-origin: 0 0;
+	pointer-events: none;
+}
+
+/* Subtitles on + steady playback only (see armUncrop in the JS). */
+.sraik-player.sp-uncrop .sp-media iframe {
+	top: 0 !important;
+	height: 100% !important;
+}
+
+/*
+ * Quality. YouTube removed setPlaybackQuality in 2019 and now picks the
+ * resolution from the player's size. High lays the frame out at 2x and
+ * scales it back down (YouTube sees a big player -> HD); Data saver does
+ * the reverse. The visible box and the crop are unchanged.
+ */
+.sraik-player.sp-q-high .sp-media iframe { width: 200% !important; height: 400% !important; transform: scale(.5); }
+.sraik-player.sp-q-high.sp-uncrop .sp-media iframe { height: 200% !important; }
+.sraik-player.sp-q-saver .sp-media iframe { width: 50% !important; height: 100% !important; transform: scale(2); }
+.sraik-player.sp-q-saver.sp-uncrop .sp-media iframe { height: 50% !important; }
+
+.sraik-player .sp-poster {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 2;
+	background-color: #000;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	pointer-events: none;
+	transition: opacity .3s ease, visibility .3s ease;
+}
+
+.sraik-player .sp-poster::after {
+	content: "";
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background: rgba(0, 0, 0, .18);
+}
+
+.sraik-player.sp-started:not(.sp-ended) .sp-poster,
+.sraik-player.sp-passthrough .sp-poster {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.sraik-player .sp-shield {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 3;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+
+.sraik-player .sp-scrim {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 4;
+	pointer-events: none;
+	background: linear-gradient(to top, rgba(0, 0, 0, .72) 0, rgba(0, 0, 0, .28) 22%, rgba(0, 0, 0, 0) 42%);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .22s ease, visibility .22s ease;
+}
+
+.sraik-player.sp-touch .sp-scrim {
+	background:
+		linear-gradient(to top, rgba(0, 0, 0, .7) 0, rgba(0, 0, 0, 0) 40%),
+		linear-gradient(rgba(0, 0, 0, .32), rgba(0, 0, 0, .32));
+}
+
+/* ─────────────── buttons (reset first — themes style bare <button>) ─────────────── */
+
+.sraik-player .sp-btn,
+.sraik-player .sp-mi {
+	-webkit-appearance: none;
+	appearance: none;
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+	min-height: 0;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	box-shadow: none;
+	color: #fff;
+	font: inherit;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: none;
+	line-height: 1;
+	cursor: pointer;
+	touch-action: manipulation; /* quick repeat taps are taps, not double-tap zoom */
+	-webkit-tap-highlight-color: transparent;
+}
+
+.sraik-player .sp-btn {
+	position: relative;
+	display: inline-flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	transition: background-color .15s ease, opacity .15s ease;
+}
+
+.sraik-player .sp-btn:focus { outline: none; }
+.sraik-player .sp-btn:focus-visible,
+.sraik-player .sp-mi:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+.sraik-player .sp-ico {
+	display: block;
+	flex: 0 0 24px;
+	width: 24px;
+	height: 24px;
+	pointer-events: none;
+}
+
+.sraik-player .sp-num {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	margin-top: 1px;
+	transform: translateY(-50%);
+	font-size: 8.5px;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	font-variant-numeric: tabular-nums;
+	pointer-events: none;
+}
+
+/* Icon state swaps */
+.sraik-player .i-pause,
+.sraik-player .i-replay,
+.sraik-player .i-mute,
+.sraik-player .i-fsoff { display: none; }
+
+.sraik-player.sp-playing .i-play { display: none; }
+.sraik-player.sp-playing .i-pause { display: block; }
+.sraik-player.sp-ended .i-play,
+.sraik-player.sp-ended .i-pause { display: none; }
+.sraik-player.sp-ended .i-replay { display: block; }
+.sraik-player.sp-muted .i-vol { display: none; }
+.sraik-player.sp-muted .i-mute { display: block; }
+.sraik-player.sp-fs .i-fson { display: none; }
+.sraik-player.sp-fs .i-fsoff { display: block; }
+
+/* ─────────────── centre controls ─────────────── */
+
+.sraik-player .sp-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 7;
+	display: flex;
+	align-items: center;
+	gap: 32px;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity .2s ease, visibility .2s ease;
+}
+
+.sraik-player .sp-center .sp-btn { pointer-events: auto; }
+
+.sraik-player:not(.sp-started) .sp-center,
+.sraik-player.sp-ended .sp-center,
+.sraik-player.sp-ui.sp-touch .sp-center,
+.sraik-player.sp-ui.sp-paused .sp-center {
+	opacity: 1;
+	visibility: visible;
+}
+
+.sraik-player .sp-big {
+	width: 68px;
+	height: 68px;
+	border-radius: 50%;
+	background: #C8102E;
+}
+
+.sraik-player .sp-big .sp-ico { flex-basis: 30px; width: 30px; height: 30px; }
+.sraik-player .sp-big .i-play { transform: translateX(2px); }
+
+.sraik-player .sp-cskip {
+	display: none;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, .42);
+}
+
+.sraik-player .sp-cskip .sp-ico { flex-basis: 30px; width: 30px; height: 30px; }
+.sraik-player .sp-cskip .sp-num { font-size: 10.5px; }
+
+.sraik-player.sp-touch.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
+
+.sraik-player.sp-buffering .sp-big {
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* ─────────────── spinner ─────────────── */
+
+.sraik-player .sp-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 6;
+	width: 44px;
+	height: 44px;
+	margin: -22px 0 0 -22px;
+	border: 3px solid rgba(255, 255, 255, .22);
+	border-top-color: #fff;
+	border-radius: 50%;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	animation: sp-spin .8s linear infinite;
+}
+
+.sraik-player.sp-buffering .sp-spinner { opacity: 1; visibility: visible; }
+
+@keyframes sp-spin { to { transform: rotate(360deg); } }
+
+/* ─────────────── double-tap feedback ─────────────── */
+
+.sraik-player .sp-ripple {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 40%;
+	background: rgba(255, 255, 255, .12);
+	font-size: 13px;
+	font-weight: 600;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity .2s ease, visibility .2s ease;
+}
+
+.sraik-player .sp-ripple .sp-ico { flex-basis: 28px; width: 28px; height: 28px; }
+.sraik-player .sp-ripple--l { left: 0; border-radius: 0 100% 100% 0 / 0 50% 50% 0; }
+.sraik-player .sp-ripple--r { right: 0; border-radius: 100% 0 0 100% / 50% 0 0 50%; }
+.sraik-player .sp-ripple.is-on { opacity: 1; visibility: visible; }
+
+/* Button / keyboard skips: a quiet pill instead of the full sweep. */
+.sraik-player .sp-ripple.is-soft { background: transparent; }
+.sraik-player .sp-ripple.is-soft .sp-ico { display: none; }
+.sraik-player .sp-ripple.is-soft .sp-ripple-txt {
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: rgba(9, 9, 11, .78);
+}
+
+/* ─────────────── bottom bar ─────────────── */
+
+.sraik-player .sp-bar {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 8;
+	padding: 0 10px 6px;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .22s ease, visibility .22s ease;
+}
+
+.sraik-player.sp-ui .sp-bar,
+.sraik-player.sp-ui .sp-scrim,
+.sraik-player:not(.sp-started) .sp-bar,
+.sraik-player:not(.sp-started) .sp-scrim,
+.sraik-player.sp-ended .sp-bar,
+.sraik-player.sp-ended .sp-scrim,
+.sraik-player.sp-dragging .sp-bar,
+.sraik-player.sp-menu-open .sp-bar {
+	opacity: 1;
+	visibility: visible;
+}
+
+.sraik-player .sp-progress {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 22px;
+	margin: 0 6px;
+	cursor: pointer;
+	touch-action: none;
+	outline: none;
+}
+
+.sraik-player.sp-touch .sp-progress { height: 28px; }
+
+.sraik-player .sp-track {
+	position: relative;
+	flex: 1 1 auto;
+	height: 4px;
+	border-radius: 3px;
+	background: rgba(255, 255, 255, .24);
+	overflow: hidden;
+	transition: height .15s ease;
+}
+
+.sraik-player .sp-progress:focus-visible .sp-track { outline: 2px solid #fff; outline-offset: 3px; }
+.sraik-player.sp-dragging .sp-track { height: 6px; }
+
+.sraik-player .sp-buffer,
+.sraik-player .sp-played {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 0;
+}
+
+.sraik-player .sp-buffer { background: rgba(255, 255, 255, .34); }
+.sraik-player .sp-played { background: #C8102E; }
+
+.sraik-player .sp-thumb {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 14px;
+	height: 14px;
+	margin: -7px 0 0 -7px;
+	border-radius: 50%;
+	background: #C8102E;
+	transform: scale(0);
+	transition: transform .15s ease;
+	pointer-events: none;
+}
+
+.sraik-player.sp-touch .sp-thumb,
+.sraik-player.sp-dragging .sp-thumb { transform: scale(1); }
+
+.sraik-player .sp-tip {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	margin-bottom: 4px;
+	padding: 5px 8px;
+	border-radius: 6px;
+	background: rgba(9, 9, 11, .92);
+	font-size: 12px;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	transform: translateX(-50%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .12s ease;
+}
+
+.sraik-player .sp-progress.is-tip .sp-tip { opacity: 1; }
+
+.sraik-player .sp-row {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	height: 44px;
+}
+
+.sraik-player.sp-touch .sp-skip { display: none; }
+
+.sraik-player .sp-time {
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	gap: 5px;
+	padding: 0 8px;
+	font-size: 13px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	color: rgba(255, 255, 255, .95);
+}
+
+.sraik-player .sp-sep { opacity: .55; }
+.sraik-player .sp-spacer { flex: 1 1 auto; min-width: 4px; }
+
+/* Subtitles on: crimson underline, like a pressed key. */
+.sraik-player .sp-ccb::after {
+	content: "";
+	position: absolute;
+	left: 10px;
+	right: 10px;
+	bottom: 6px;
+	height: 2.5px;
+	border-radius: 2px;
+	background: #C8102E;
+	transform: scaleX(0);
+	transition: transform .15s ease;
+}
+
+.sraik-player.sp-cc-on .sp-ccb::after { transform: scaleX(1); }
+.sraik-player.sp-cc-none .sp-ccb { opacity: .45; }
+
+/* ─────────────── volume ─────────────── */
+
+.sraik-player .sp-vol {
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+}
+
+.sraik-player .sp-volume {
+	position: relative;
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	width: 0;
+	height: 32px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	opacity: 0;
+	cursor: pointer;
+	touch-action: none;
+	outline: none;
+	transition: width .2s ease, opacity .2s ease, margin .2s ease;
+}
+
+.sraik-player:not(.sp-touch) .sp-vol:hover .sp-volume,
+.sraik-player:not(.sp-touch) .sp-vol:focus-within .sp-volume,
+.sraik-player .sp-vol.is-active .sp-volume {
+	width: 76px;
+	margin: 0 8px 0 0;
+	opacity: 1;
+}
+
+/* Touch: tap the speaker to slide the bar out (a bigger target for thumbs). */
+.sraik-player.sp-vol-open .sp-volume {
+	width: 88px;
+	margin: 0 6px 0 0;
+	opacity: 1;
+}
+
+.sraik-player.sp-touch .sp-vthumb { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+.sraik-player.sp-touch .sp-vtrack { margin: 0 7px; }
+
+/* Inset by the thumb radius so the thumb never clips at 0% or 100%. */
+.sraik-player .sp-vtrack {
+	position: relative;
+	flex: 1 1 auto;
+	height: 4px;
+	margin: 0 6px;
+	border-radius: 2px;
+	background: rgba(255, 255, 255, .28);
+}
+
+.sraik-player .sp-vfill {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	border-radius: 2px;
+	background: #fff;
+}
+
+.sraik-player .sp-vthumb {
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	width: 12px;
+	height: 12px;
+	margin: -6px 0 0 -6px;
+	border-radius: 50%;
+	background: #fff;
+}
+
+.sraik-player .sp-volume:focus-visible .sp-vtrack { outline: 2px solid #fff; outline-offset: 4px; }
+
+.sraik-player.sp-ios .sp-volume { display: none; }
+
+/* ─────────────── settings menu ─────────────── */
+
+.sraik-player .sp-menu {
+	position: absolute;
+	right: 10px;
+	bottom: 62px;
+	z-index: 9;
+	display: none;
+	width: 250px;
+	max-width: calc(100% - 20px);
+	max-height: calc(100% - 76px);
+	padding: 6px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
+	border: 1px solid rgba(255, 255, 255, .08);
+	border-radius: 12px;
+	background: rgba(18, 18, 20, .97);
+}
+
+.sraik-player.sp-menu-open .sp-menu { display: block; }
+
+.sraik-player .sp-mi {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-height: 42px;
+	padding: 8px 10px;
+	border-radius: 8px;
+	color: #F4F4F5;
+	font-size: 14px;
+	text-align: left;
+}
+
+.sraik-player .sp-mi .sp-ico { flex: 0 0 18px; width: 18px; height: 18px; }
+.sraik-player .sp-ml { flex: 1 1 auto; }
+.sraik-player .sp-mv { color: #A1A1AA; font-size: 13px; white-space: nowrap; }
+
+.sraik-player .sp-mhead {
+	margin-bottom: 4px;
+	border-bottom: 1px solid rgba(255, 255, 255, .08);
+	border-radius: 8px 8px 0 0;
+	font-weight: 600;
+}
+
+.sraik-player .sp-opt .i-check { visibility: hidden; color: #C8102E; }
+.sraik-player .sp-opt[aria-checked="true"] .i-check { visibility: visible; }
+.sraik-player .sp-opt[aria-checked="true"] { color: #fff; font-weight: 600; }
+
+.sraik-player .sp-mnote {
+	margin: 0;
+	padding: 10px;
+	color: #A1A1AA;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+/* ─────────────── toast / error ─────────────── */
+
+.sraik-player .sp-toast {
+	position: absolute;
+	top: 14px;
+	left: 50%;
+	z-index: 10;
+	max-width: calc(100% - 32px);
+	padding: 8px 14px;
+	border-radius: 999px;
+	background: rgba(9, 9, 11, .88);
+	font-size: 13px;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transform: translate(-50%, -4px);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+
+.sraik-player .sp-toast.is-on { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
+.sraik-player .sp-error {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 11;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgba(0, 0, 0, .84);
+	font-size: 14px;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.sraik-player.sp-has-error .sp-error { display: flex; }
+.sraik-player.sp-has-error .sp-center,
+.sraik-player.sp-has-error .sp-spinner { display: none; }
+
+/* ─────────────── tap-through fallback ─────────────── */
+
+.sraik-player.sp-passthrough .sp-shield,
+.sraik-player.sp-passthrough .sp-center,
+.sraik-player.sp-passthrough .sp-spinner { display: none; }
+.sraik-player.sp-passthrough .sp-media iframe { pointer-events: auto; }
+
+/* ─────────────── fullscreen ─────────────── */
+
+/* Mounted inside a host box that already has the right shape (landing pages). */
+.sraik-player.sp-fill {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	aspect-ratio: auto;
+	padding-top: 0;
+	border-radius: inherit;
+}
+
+/* 9:16 video. */
+.sraik-player.sp-portrait { aspect-ratio: 9 / 16; }
+
+.sraik-player.sp-fs {
+	width: 100%;
+	height: 100%;
+	max-height: none;
+	aspect-ratio: auto;
+	border-radius: 0;
+}
+
+.sraik-player.sp-fs .sp-stage {
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 56.25vw;
+	transform: translateY(-50%);
+}
+
+@media (min-aspect-ratio: 16/9) {
+	.sraik-player.sp-fs .sp-stage {
+		top: 0;
+		left: 50%;
+		width: 177.778vh;
+		width: 177.778dvh;
+		height: 100%;
+		transform: translateX(-50%);
+	}
+}
+
+.sraik-player.sp-portrait.sp-fs .sp-stage {
+	top: 0;
+	left: 50%;
+	width: 56.25vh;
+	width: 56.25dvh;
+	height: 100%;
+	transform: translateX(-50%);
+}
+
+@media (max-aspect-ratio: 9/16) {
+	.sraik-player.sp-portrait.sp-fs .sp-stage {
+		top: 50%;
+		left: 0;
+		width: 100%;
+		height: 177.778vw;
+		transform: translateY(-50%);
+	}
+}
+
+.sraik-player.sp-fake-fs {
+	border-radius: 0;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 2147483000;
+	margin: 0;
+}
+
+html.sraik-player-lock,
+html.sraik-player-lock body { overflow: hidden; }
+
+.sraik-player.sp-fs .sp-bar {
+	padding: 0 calc(12px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(12px + env(safe-area-inset-left, 0px));
+}
+
+.sraik-player.sp-fs .sp-menu { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+
+.sraik-player.sp-fs.sp-playing:not(.sp-ui),
+.sraik-player.sp-fs.sp-playing:not(.sp-ui) .sp-shield { cursor: none; }
+
+/* ─────────────── pointer-specific hover ─────────────── */
+
+@media (hover: hover) {
+	.sraik-player .sp-row .sp-btn:hover { background: rgba(255, 255, 255, .12); }
+	.sraik-player .sp-big:hover { background: #E01A3A; }
+	.sraik-player .sp-cskip:hover { background: rgba(0, 0, 0, .6); }
+	.sraik-player .sp-mi:hover { background: rgba(255, 255, 255, .08); }
+	.sraik-player .sp-progress:hover .sp-thumb { transform: scale(1); }
+	.sraik-player .sp-progress:hover .sp-track { height: 6px; }
+}
+
+/* ─────────────── compact (phones, narrow columns) ─────────────── */
+
+@container (max-width: 560px) {
+	.sraik-player .sp-bar { padding: 0 6px 4px; }
+	.sraik-player .sp-row { height: 40px; }
+	.sraik-player .sp-btn { width: 38px; height: 38px; }
+	.sraik-player .sp-skip { display: none; }
+	.sraik-player .sp-time { padding: 0 6px; font-size: 12px; }
+	.sraik-player.sp-vol-open .sp-time,
+	.sraik-player:not(.sp-touch) .sp-vol:hover ~ .sp-time,
+	.sraik-player .sp-vol.is-active ~ .sp-time { display: none; }
+	.sraik-player .sp-menu { right: 6px; bottom: 52px; width: 230px; max-height: calc(100% - 64px); }
+	.sraik-player .sp-mi { min-height: 38px; padding: 6px 10px; font-size: 13px; }
+	.sraik-player .sp-center { gap: 26px; }
+	.sraik-player .sp-big { width: 60px; height: 60px; }
+	.sraik-player .sp-cskip { width: 46px; height: 46px; }
+	.sraik-player.sp-ui .sp-center { opacity: 1; visibility: visible; }
+	.sraik-player.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
+	.sraik-player .sp-toast { top: 10px; font-size: 12px; }
+}
+
+@container (max-width: 380px) {
+	.sraik-player .sp-btn { width: 34px; height: 34px; }
+	.sraik-player .sp-ico { flex-basis: 22px; width: 22px; height: 22px; }
+	.sraik-player .sp-time { padding: 0 4px; gap: 3px; font-size: 11.5px; }
+	.sraik-player .sp-center { gap: 20px; }
+	.sraik-player .sp-big { width: 54px; height: 54px; }
+	.sraik-player .sp-big .sp-ico { flex-basis: 26px; width: 26px; height: 26px; }
+	.sraik-player .sp-cskip { width: 42px; height: 42px; }
+	.sraik-player .sp-cskip .sp-ico { flex-basis: 26px; width: 26px; height: 26px; }
+	.sraik-player .sp-cskip .sp-num { font-size: 9.5px; }
+}
+
+/* Browsers without container queries: same rules by viewport. */
+@supports not (container-type: inline-size) {
+	@media (max-width: 600px) {
+		.sraik-player .sp-bar { padding: 0 6px 4px; }
+		.sraik-player .sp-row { height: 40px; }
+		.sraik-player .sp-btn { width: 38px; height: 38px; }
+		.sraik-player .sp-skip { display: none; }
+		.sraik-player .sp-time { padding: 0 6px; font-size: 12px; }
+		.sraik-player.sp-vol-open .sp-time,
+		.sraik-player:not(.sp-touch) .sp-vol:hover ~ .sp-time,
+		.sraik-player .sp-vol.is-active ~ .sp-time { display: none; }
+		.sraik-player .sp-menu { right: 6px; bottom: 52px; width: 230px; max-height: calc(100% - 64px); }
+		.sraik-player .sp-mi { min-height: 38px; padding: 6px 10px; font-size: 13px; }
+		.sraik-player .sp-center { gap: 26px; }
+		.sraik-player .sp-big { width: 60px; height: 60px; }
+		.sraik-player .sp-cskip { width: 46px; height: 46px; }
+		.sraik-player.sp-ui .sp-center { opacity: 1; visibility: visible; }
+		.sraik-player.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sraik-player .sp-poster,
+	.sraik-player .sp-scrim,
+	.sraik-player .sp-bar,
+	.sraik-player .sp-center,
+	.sraik-player .sp-ripple,
+	.sraik-player .sp-toast,
+	.sraik-player .sp-thumb,
+	.sraik-player .sp-track { transition: none; }
+}
+
+/* Settings menu open: the centre cluster steps back (after every rule that shows it). */
+.sraik-player.sp-menu-open .sp-center,
+.sraik-player.sp-ui.sp-menu-open .sp-center,
+.sraik-player.sp-ui.sp-touch.sp-menu-open .sp-center,
+.sraik-player.sp-ui.sp-paused.sp-menu-open .sp-center {
+	opacity: 0;
+	visibility: hidden;
+}

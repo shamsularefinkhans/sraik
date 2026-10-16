@@ -1,0 +1,108 @@
+/* ==========================================================================
+   mbhsc.css — /mbhsc/ (Mission: Bypass HSC). Everything else comes from
+   base.css + home.css; this file only adds the sections the front page
+   does not have, built from the same tokens and card vocabulary.
+   ========================================================================== */
+
+/* ---------- shared bits ---------- */
+.mb-paras{display:flex;flex-direction:column;gap:16px}
+.mb-paras .split-text{max-width:480px}
+
+/* ---------- program: quote card on the split's right ---------- */
+.mb-quote{margin:0 0 0 auto;border-radius:20px;padding:8px;display:flex;flex-direction:column}
+.mb-quote img{width:100%;aspect-ratio:1440/972;object-fit:cover;border-radius:14px;background:#141518}
+.mb-quote-cap{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:24px 20px 20px}
+.mb-quote-ic{width:36px;height:36px;color:var(--teal)}
+.mb-quote blockquote{color:var(--t1)}
+.mb-quote-by{display:flex;align-items:center;gap:10px;font-size:14px;line-height:21px;color:var(--t2)}
+.mb-quote-by b{font-weight:500;color:var(--t1)}
+.mb-quote-by span::before{content:"·";margin-right:10px;color:var(--t3)}
+
+/* ---------- pain: 2 × 2 note cards ---------- */
+.mb-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.mb-note{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:32px}
+.mb-note-ic{width:40px;height:40px;color:var(--teal)}
+.mb-note p{color:var(--t2);font-size:16px;line-height:24.8px}
+
+/* ---------- outcomes: the orb cards, two columns ---------- */
+.mb-ucards{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* ---------- curriculum accordion ---------- */
+.mb-curr-head{display:flex;flex-direction:column;align-items:center;gap:24px}
+.mb-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:auto!important}
+.mb-badges .chip b{font-weight:600;color:var(--lime)}
+.mb-mods{display:flex;flex-direction:column;gap:12px;max-width:800px;margin:0 auto}
+.mb-mod{border-radius:16px}
+.mb-mod-h{margin:0;font:inherit}
+.mb-mod-btn{width:100%;display:flex;align-items:center;gap:16px;padding:16px 20px 16px 16px;text-align:left}
+.mb-mod-ic{width:40px;height:40px;color:var(--teal)}
+.mb-mod-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.mb-mod-meta{font-family:var(--mono);font-size:12px;line-height:16.8px;letter-spacing:.48px;text-transform:uppercase;color:var(--teal)}
+.mb-mod-title{font-size:18px;line-height:27px;font-weight:500;color:var(--t1)}
+.mb-mod-n{flex:none;font-size:12px;line-height:17.4px;color:var(--t3);white-space:nowrap}
+.mb-mod.is-open .faq-ic,.mb-pay .is-open .faq-ic{background:var(--lime);color:var(--ink);transform:rotate(180deg)}
+.mb-mod-a{overflow:hidden;transition:height .35s var(--ease)}
+.mb-les{display:flex;flex-direction:column;margin:0 20px 0 72px;padding:4px 0 20px;border-top:1px solid var(--line)}
+.mb-les li{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:15px;line-height:22.5px;color:var(--t2)}
+.mb-les li + li{border-top:1px solid rgba(255,255,255,.04)}
+.mb-les-ic{flex:none;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--teal-10);color:var(--teal)}
+.mb-les-ic svg{fill:currentColor;margin-left:1px}
+.mb-les-n{flex:1;min-width:0}
+.mb-les-d{flex:none;font-family:var(--mono);font-size:12px;color:var(--t3);white-space:nowrap}
+.mb-note-txt{max-width:800px;margin:0 auto;text-align:center;color:var(--t3);font-size:14px;line-height:21px}
+/* the two curriculum sections read as one block */
+#live .sec-in{padding-top:0}
+
+/* ---------- pricing: three plans + checkout tutorial ---------- */
+.mb-plans{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mb-badge-dim{background:var(--surface-2);color:var(--t2);box-shadow:inset 0 0 0 1px var(--line)}
+.mb-pay{width:100%;max-width:800px;border-radius:16px}
+.mb-pay-in{display:flex;flex-direction:column;align-items:center;gap:12px;padding:4px 20px 24px}
+.mb-pay-video{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer}
+.mb-pay-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.mb-pay-video .hwin-play svg{margin-left:3px;fill:currentColor}
+.mb-pay-yt{display:inline-flex;align-items:center;gap:4px;font-size:12px;line-height:17.4px;color:var(--t3)}
+.mb-pay-yt:hover{color:var(--teal)}
+
+/* ---------- FAQ: WhatsApp button under the list ---------- */
+.mb-faq-more{margin:0 auto}
+
+/* ---------- meet your mentor ---------- */
+.mb-about{align-items:center!important}
+.mb-portrait{flex:0 0 460px;margin:0;padding:8px;border-radius:20px}
+.mb-portrait img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;background:#141518}
+.mb-portrait-chip{position:absolute;left:24px;bottom:24px}
+.mb-about-copy{flex:1 1 auto!important;gap:28px}
+.mb-about-who{display:flex;flex-direction:column;gap:6px}
+.mb-about-foot{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.mb-sign{width:150px;height:auto;opacity:.75;filter:brightness(0) invert(1)}
+
+/* ---------- tablet ---------- */
+@media (min-width:810px) and (max-width:1199.98px){
+  .mb-notes{gap:20px}
+  .mb-ucards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mb-plans{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mb-plans .plan:last-child{grid-column:1/-1}
+  .mb-portrait{flex:none;width:100%;max-width:520px;margin:0 auto}
+  .mb-quote{margin:0 auto}
+  .mb-paras .split-text{max-width:640px}
+}
+
+/* ---------- mobile ---------- */
+@media (max-width:809.98px){
+  .mb-notes{grid-template-columns:1fr;gap:16px}
+  .mb-note{padding:24px;gap:16px}
+  .mb-note p{font-size:15px;line-height:23.25px}
+  .mb-ucards{grid-template-columns:1fr}
+  .mb-plans{grid-template-columns:1fr}
+  .mb-mod-btn{gap:12px;padding:14px 14px 14px 12px}
+  .mb-mod-ic{width:36px;height:36px}
+  .mb-mod-title{font-size:16px;line-height:24px}
+  .mb-mod-n{display:none}
+  .mb-les{margin:0 14px 0 14px}
+  .mb-les li{font-size:14px;line-height:21px}
+  .mb-portrait{flex:none;width:100%;max-width:350px;margin:0 auto}
+  .mb-quote{margin:0 auto}
+  .mb-portrait-chip{left:18px;bottom:18px}
+  .mb-quote-cap{padding:20px 14px 14px}
+}

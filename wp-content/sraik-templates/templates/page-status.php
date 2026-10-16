@@ -53,6 +53,12 @@ $stats = array(
 $pill_icon = array( 0 => 'check', 1 => 'triangle-alert', 2 => 'x', -1 => 'minus' );
 $pill_cls  = array( 0 => 'up', 1 => 'deg', 2 => 'down', -1 => 'none' );
 
+/* Live data: let page caches keep this view for minutes, not hours. */
+if ( ! headers_sent() ) {
+	header( 'Cache-Control: public, max-age=60' );
+}
+do_action( 'litespeed_control_set_ttl', 300 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals -- LiteSpeed Cache API
+
 sraik_page_css( array( 'css/status.css' ) );
 sraik_part( 'head.php' );
 sraik_part( 'nav.php' );

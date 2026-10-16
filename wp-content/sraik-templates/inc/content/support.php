@@ -149,11 +149,11 @@ return array(
 		'icon'    => 'credit-card',
 		'title'   => 'যেভাবে পেমেন্ট করবে',
 		'sub'     => 'Website-এ SSLCOMMERZ-এর মাধ্যমে payment হয়, যেটা বাংলাদেশের licensed payment gateway। বিকাশ, নগদ, রকেট, উপায়, bank, card সব দিয়েই করতে পারবে।',
-		/* icon, name, meta, box */
+		/* icon, name, meta (access after paying), box */
 		'methods' => array(
-			array( 'smartphone', 'bKash', 'SSLCOMMERZ', 'Mobile Banking → bKash → Pay' ),
-			array( 'wallet', 'Nagad', 'SSLCOMMERZ', 'Mobile Banking → Nagad → Pay' ),
-			array( 'credit-card', 'Card & Bank', 'SSLCOMMERZ', 'Card / bank → instant access' ),
+			array( 'smartphone', 'bKash', 'instant', 'Mobile Banking → bKash' ),
+			array( 'wallet', 'Nagad', 'instant', 'Mobile Banking → Nagad' ),
+			array( 'credit-card', 'Card & Bank', 'instant', 'Card / Bank → Pay' ),
 		),
 		'badge'   => array( 'brand/sslcommerz-pay-with-logo.webp', 'Pay securely with SSLCOMMERZ' ),
 	),
@@ -179,7 +179,7 @@ return array(
 		'sub'    => 'উত্তর পাওয়ার সবচেয়ে দ্রুত রাস্তাটা বেছে নাও।',
 		/* icon, title, text, href */
 		'routes' => array(
-			array( 'mail', 'Contact support', 'shamsfccbd@gmail.com · Phone 01601013241 · WhatsApp +8801601013241', '#contact' ),
+			array( 'mail', 'Contact support', 'shamsfccbd@gmail.com · 01601013241 (ফোন ও WhatsApp)', '#contact' ),
 			array( 'newspaper', 'Blog পড়ো', 'মেডিকেল এডমিশন স্ট্র্যাটেজি, স্টাডি সিস্টেম আর স্টুডেন্টদের গল্প।', '/blog/' ),
 			array( 'circle-help', 'FAQ', 'প্রোগ্রাম, দাম, ভর্তি আর পেমেন্ট নিয়ে সব প্রশ্নের সরাসরি উত্তর।', '/faq/' ),
 			array( 'receipt', 'Refund policy', 'SRAIK-এর refund শর্ত আর কিভাবে request করবে।', '/refund-policy/' ),

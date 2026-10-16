@@ -413,6 +413,15 @@ function sraik_status_view() {
 		$cur = isset( $d['current'][ $key ] ) ? $d['current'][ $key ] : null;
 		/* A result older than 30 minutes is not "current" any more. */
 		$s = ( $cur && ( $now - (int) $cur[3] ) < 30 * MINUTE_IN_SECONDS ) ? (int) $cur[0] : -1;
+		/* One failed request can be our own network: call it an outage only
+		   when the check before it failed too, otherwise "degraded". */
+		if ( 2 === $s ) {
+			$smp  = isset( $d['samples'][ $key ] ) ? array_values( $d['samples'][ $key ] ) : array();
+			$prev = count( $smp ) > 1 ? $smp[ count( $smp ) - 2 ] : null;
+			if ( ! $prev || 2 !== (int) $prev[1] ) {
+				$s = 1;
+			}
+		}
 		if ( 0 === $s ) {
 			$healthy++;
 		}
@@ -505,13 +514,37 @@ function sraik_status_spark( $samples, $id ) {
 	$max  = max( sraik_status_pct( $vals, 95 ) * 1.25, 1 );
 	/* x runs from the first sample to now; the page labels that start. */
 	$span = max( 1, $now - $pts[0][0] );
+	/* A gap longer than 20 minutes (missed checks) breaks the line rather
+	   than drawing a straight bridge over hours we know nothing about. */
 	$line = '';
-	foreach ( $pts as $i => $p ) {
+	$area = '';
+	$seg  = array();
+	$flush = function () use ( &$seg, &$line, &$area ) {
+		if ( ! $seg ) {
+			return;
+		}
+		$d     = 'M' . implode( ' L', $seg );
+		$line .= $d . ' ';
+		if ( count( $seg ) > 1 ) {
+			$x0    = strtok( $seg[0], ',' );
+			$x1    = strtok( $seg[ count( $seg ) - 1 ], ',' );
+			$area .= $d . ' L' . $x1 . ',120 L' . $x0 . ',120 Z ';
+		}
+		$seg = array();
+	};
+	$prev = null;
+	foreach ( $pts as $p ) {
+		if ( null !== $prev && $p[0] - $prev > 20 * MINUTE_IN_SECONDS ) {
+			$flush();
+		}
 		$x     = ( $p[0] - $pts[0][0] ) / $span * 600;
 		$y     = 112 - min( 1, $p[1] / $max ) * 96;
-		$line .= ( $i ? ' L' : 'M' ) . number_format( $x, 1, '.', '' ) . ',' . number_format( $y, 1, '.', '' );
+		$seg[] = number_format( $x, 1, '.', '' ) . ',' . number_format( $y, 1, '.', '' );
+		$prev  = $p[0];
 	}
-	$area = $line . ' L600,120 L0,120 Z';
+	$flush();
+	$line = trim( $line );
+	$area = trim( $area );
 	$gid  = 'spark-' . sanitize_html_class( $id );
 
 	$svg  = '<svg class="st-spark" viewBox="0 0 600 120" preserveAspectRatio="none" width="100%" height="120" aria-hidden="true" focusable="false">';
@@ -519,7 +552,9 @@ function sraik_status_spark( $samples, $id ) {
 	foreach ( array( 30, 60, 90 ) as $gy ) {
 		$svg .= '<line x1="0" x2="600" y1="' . $gy . '" y2="' . $gy . '" stroke="rgba(255,255,255,.08)" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="3 4"/>';
 	}
-	$svg .= '<path d="' . esc_attr( $area ) . '" fill="url(#' . esc_attr( $gid ) . ')"/>';
+	if ( '' !== $area ) {
+		$svg .= '<path d="' . esc_attr( $area ) . '" fill="url(#' . esc_attr( $gid ) . ')"/>';
+	}
 	$svg .= '<path d="' . esc_attr( $line ) . '" fill="none" stroke="#6ee7d2" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>';
 	return $svg . '</svg>';
 }

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** All FAQ groups: array of array( slug, title, icon, items[ id, q, a ] ). */
-function sraik_faq_groups() {
+function sraik_tpl_faq_groups() {
 	static $groups = null;
 	if ( null === $groups ) {
 		$groups = apply_filters( 'sraik_faq_groups', sraik_content( 'faq' ) );
@@ -22,8 +22,8 @@ function sraik_faq_groups() {
 }
 
 /** One question by id (or null). */
-function sraik_faq_find( $id ) {
-	foreach ( sraik_faq_groups() as $g ) {
+function sraik_tpl_faq_find( $id ) {
+	foreach ( sraik_tpl_faq_groups() as $g ) {
 		foreach ( $g['items'] as $it ) {
 			if ( $it['id'] === $id ) {
 				return $it;
@@ -34,7 +34,9 @@ function sraik_faq_find( $id ) {
 }
 
 /** Answer HTML, with links made site-relative and stripped of anything unsafe. */
-function sraik_faq_answer( $html ) {
+function sraik_tpl_faq_answer( $html ) {
+	$channel = sraik_url( 'wa_channel', '' );
+	$html    = str_replace( '{{wa_channel}}', $channel ? '<p><a href="' . esc_url( $channel ) . '" target="_blank" rel="noopener noreferrer">হোয়াটসঅ্যাপ চ্যানেলে যাও →</a></p>' : '', $html );
 	$html = preg_replace_callback(
 		'#href="(/[^"]*)"#',
 		function ( $m ) {
@@ -64,7 +66,7 @@ function sraik_faq_answer( $html ) {
  *   $items  list of array( id, q, a )
  *   $open   index open on load (-1: none)
  */
-function sraik_faq_list( $items, $open = 0, $cls = 'faq' ) {
+function sraik_tpl_faq_list( $items, $open = 0, $cls = 'faq' ) {
 	ob_start();
 	foreach ( array_values( $items ) as $i => $it ) {
 		$is   = ( $i === $open );
@@ -73,7 +75,7 @@ function sraik_faq_list( $items, $open = 0, $cls = 'faq' ) {
 		?>
 		<div class="<?php echo esc_attr( $cls ); ?>-item<?php echo $is ? ' is-open' : ''; ?>" id="<?php echo esc_attr( $id ); ?>" data-acc-item>
 		  <h3 class="<?php echo esc_attr( $cls ); ?>-q-wrap"><button type="button" class="<?php echo esc_attr( $cls ); ?>-q" data-acc-btn aria-expanded="<?php echo $is ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $a_id ); ?>"><span><?php echo esc_html( $it['q'] ); ?></span><span class="<?php echo esc_attr( $cls ); ?>-ic" aria-hidden="true"><?php sraik_i( 'chevron-down', 14, 2.2 ); ?></span></button></h3>
-		  <div class="<?php echo esc_attr( $cls ); ?>-a" id="<?php echo esc_attr( $a_id ); ?>" data-acc-panel role="region"<?php echo $is ? '' : ' style="height:0"'; ?>><div class="<?php echo esc_attr( $cls ); ?>-a-in"><?php echo sraik_faq_answer( $it['a'] ); // phpcs:ignore ?></div></div>
+		  <div class="<?php echo esc_attr( $cls ); ?>-a" id="<?php echo esc_attr( $a_id ); ?>" data-acc-panel role="region"<?php echo $is ? '' : ' style="height:0"'; ?>><div class="<?php echo esc_attr( $cls ); ?>-a-in"><?php echo sraik_tpl_faq_answer( $it['a'] ); // phpcs:ignore ?></div></div>
 		</div>
 		<?php
 	}

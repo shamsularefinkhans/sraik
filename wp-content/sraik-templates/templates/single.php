@@ -31,7 +31,8 @@ while ( have_posts() ) :
 	$sp_id     = get_the_ID();
 	$sp_cat    = sraik_post_cat( $sp_id );
 	$sp_locked = post_password_required();
-	$sp_dek    = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : sraik_post_excerpt( $sp_id, 26 );
+	/* Only a hand-written excerpt: an automatic one would repeat the first paragraph. */
+	$sp_dek    = has_excerpt() ? wp_strip_all_tags( get_the_excerpt() ) : '';
 	$sp_cover  = $sp_locked ? null : sraik_post_image( $sp_id, 'large' );
 	?>
   <article <?php post_class( 'sp' ); ?>>

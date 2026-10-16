@@ -22,14 +22,14 @@ return array(
 	'hero' => array(
 		'eyebrow'   => 'Training',
 		'title'     => 'প্রস্তুতি থেকে মেডিকেল সিট —<br><span class="hl">সবকিছু এক সিস্টেমে</span>',
-		'sub'       => 'দেশের প্রথম ফুল হাইব্রিড মেন্টরশিপ প্রোগ্রাম। অপ্রয়োজনীয় ক্লাস নয় — ফোকাস সেলফ স্টাডি অপ্টিমাইজেশন, রিয়েল টাইম এমসিকিউ রিট্রিভাল আর সঠিক স্ট্র্যাটেজি।',
+		'sub'       => 'দেশের প্রথম ফুল হাইব্রিড মেন্টরশিপ প্রোগ্রাম — অপ্রয়োজনীয় ক্লাস নয়, ফোকাস সেলফ স্টাডি, রিয়েল টাইম এমসিকিউ রিট্রিভাল আর সঠিক স্ট্র্যাটেজি।',
 		'primary'   => array( 'যুক্ত হও!', '/#pricing' ),
 		'secondary' => array( 'কারিকুলাম দেখো', '#curriculum' ),
 		/* The five pillars: icon, label, anchor on this page. */
 		'chips'     => array(
 			array( 'bot', 'AI Gems', '#dd-ai' ),
 			array( 'list-checks', 'Curriculum', '#curriculum' ),
-			array( 'clipboard-check', 'Model Tests', '#capabilities' ),
+			array( 'clipboard-check', 'Tests', '#capabilities' ),
 			array( 'alarm-clock', 'Routine', '#dd-routine' ),
 			array( 'users', 'Mentorship', '#live' ),
 		),
@@ -44,7 +44,7 @@ return array(
 			/* 1 · wide: prompt → gem → generated MCQ set */
 			array(
 				'title' => '7 AI Gems — মেডিকেল এডমিশন এআই টুলকিট',
-				'text'  => 'রিয়েল টাইম মেডিকেল স্ট্যান্ডার্ড প্রশ্ন তৈরির ৫টি সাবজেক্ট জেম, অপশন এনালাইসিসের ইউনিভার্সাল এমসিকিউ সলভার আর ২৪/৭ ডাউট ক্লিয়ারিংয়ের প্লেমেকার জেম।',
+				'text'  => 'রিয়েল টাইম মেডিকেল স্ট্যান্ডার্ড প্রশ্নের ৫টি সাবজেক্ট জেম, ইউনিভার্সাল এমসিকিউ সলভার আর ২৪/৭ ডাউট সলভিংয়ের প্লেমেকার জেম।',
 				'ill'   => array(
 					'prompt' => 'কোষ বিভাজন থেকে MCQ বানাও…',
 					'chips'  => array( 'Biology Gem', 'Medical Std' ),

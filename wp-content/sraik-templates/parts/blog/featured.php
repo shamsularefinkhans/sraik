@@ -22,13 +22,17 @@ $bp_cat = sraik_post_cat( $bp_id );
       <span class="fpost-badge"><?php echo esc_html( $c['featured'] ); ?></span>
       <span class="pmeta">
         <span class="pcat"><?php echo esc_html( $bp_cat['name'] ); ?></span>
-        <time datetime="<?php echo esc_attr( get_the_date( 'c', $bp_id ) ); ?>"><?php echo esc_html( get_the_date( 'M j, Y', $bp_id ) ); ?></time>
-        <span class="pmeta-dot" aria-hidden="true">•</span>
-        <span><?php echo (int) sraik_read_time( $bp_id ); ?> min read</span>
+        <span class="pmeta-dr">
+          <time datetime="<?php echo esc_attr( get_the_date( 'c', $bp_id ) ); ?>"><?php echo esc_html( get_the_date( 'M j, Y', $bp_id ) ); ?></time>
+          <span class="pmeta-dot" aria-hidden="true">•</span>
+          <span><?php echo (int) sraik_read_time( $bp_id ); ?> min read</span>
+        </span>
       </span>
     </span>
     <span class="fpost-title t-h4b"><?php echo esc_html( wp_strip_all_tags( get_the_title( $bp_id ) ) ); ?></span>
+    <?php if ( ! post_password_required( $post_obj ) ) : ?>
     <span class="fpost-ex"><?php echo esc_html( sraik_post_excerpt( $bp_id, 26 ) ); ?></span>
+    <?php endif; ?>
     <span class="fpost-foot">
       <span class="fpost-author"><?php echo esc_html( sraik_post_author( $bp_id ) ); ?></span>
       <span class="fpost-read"><?php echo esc_html( $c['read'] ); ?> <?php sraik_i( 'arrow-up-right', 16 ); ?></span>

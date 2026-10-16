@@ -494,10 +494,17 @@ function sraik_status_spark( $samples, $id ) {
 	if ( count( $pts ) < 2 ) {
 		return '';
 	}
+	usort(
+		$pts,
+		function ( $a, $b ) {
+			return $a[0] - $b[0];
+		}
+	);
 	/* Scale to the 95th percentile so one slow outlier cannot flatten the line. */
 	$vals = wp_list_pluck( $pts, 1 );
 	$max  = max( sraik_status_pct( $vals, 95 ) * 1.25, 1 );
-	$span = max( 1, $pts[ count( $pts ) - 1 ][0] - $pts[0][0] );
+	/* x runs from the first sample to now; the page labels that start. */
+	$span = max( 1, $now - $pts[0][0] );
 	$line = '';
 	foreach ( $pts as $i => $p ) {
 		$x     = ( $p[0] - $pts[0][0] ) / $span * 600;

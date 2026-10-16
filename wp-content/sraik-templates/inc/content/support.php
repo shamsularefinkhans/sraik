@@ -148,12 +148,12 @@ return array(
 		'label'   => 'Payment',
 		'icon'    => 'credit-card',
 		'title'   => 'যেভাবে পেমেন্ট করবে',
-		'sub'     => 'Website-এ SSLCOMMERZ-এর মাধ্যমে payment হয়, যেটা বাংলাদেশের licensed payment gateway। এক পেমেন্টে লাইফটাইম access, কোনো মাসিক ফি নেই।',
+		'sub'     => 'Website-এ SSLCOMMERZ-এর মাধ্যমে payment হয়, যেটা বাংলাদেশের licensed payment gateway। বিকাশ, নগদ, রকেট, উপায়, bank, card সব দিয়েই করতে পারবে।',
 		/* icon, name, meta, box */
 		'methods' => array(
-			array( 'smartphone', 'bKash', 'Mobile Banking', 'Pay → verification code → PIN' ),
-			array( 'wallet', 'Nagad', 'Mobile Banking', 'Rocket ও Upay-ও চলবে' ),
-			array( 'credit-card', 'Card & Bank', 'SSLCOMMERZ', 'Card বা bank — instant access' ),
+			array( 'smartphone', 'bKash', 'SSLCOMMERZ', 'Mobile Banking → bKash → Pay' ),
+			array( 'wallet', 'Nagad', 'SSLCOMMERZ', 'Mobile Banking → Nagad → Pay' ),
+			array( 'credit-card', 'Card & Bank', 'SSLCOMMERZ', 'Card / bank → instant access' ),
 		),
 		'badge'   => array( 'brand/sslcommerz-pay-with-logo.webp', 'Pay securely with SSLCOMMERZ' ),
 	),

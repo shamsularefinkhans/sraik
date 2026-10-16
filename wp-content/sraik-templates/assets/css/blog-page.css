@@ -11,6 +11,7 @@
 a.pcat{transition:background-color .2s}
 a.pcat:hover{background:rgba(110,231,210,.16)}
 .pmeta-dot{color:var(--t3)}
+.pmeta-dr{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
 
 /* ---------- page hero (blog + archives) ---------- */
 .bp-hero .hero-bg .spot,.sp-hero .hero-bg .spot{width:1000px;height:760px;top:-360px;left:calc(50% - 620px);transform:none}
@@ -69,6 +70,7 @@ a.pcat:hover{background:rgba(110,231,210,.16)}
 .bp-search .btn{margin-top:0}
 
 /* ---------- single: hero ---------- */
+.sp{width:100%;display:flex;flex-direction:column;align-items:center}
 .sp-hero-in{position:relative;z-index:1;width:100%;max-width:1280px;margin:0 auto;padding:152px var(--pad-x) 0;display:flex;flex-direction:column;align-items:center;gap:56px}
 .sp-head{width:100%;max-width:840px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
 .sp-back{position:relative;display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 12px;border-radius:999px;background:var(--surface);color:var(--t2);font-size:14px;line-height:21px;transition:color .2s}
@@ -122,8 +124,8 @@ a.pcat:hover{background:rgba(110,231,210,.16)}
 .prose li > ul,.prose li > ol{margin-top:8px}
 .prose blockquote,.prose .wp-block-quote{position:relative;padding:4px 0 4px 24px;color:var(--t1);border-left:2px solid var(--lime)}
 .prose blockquote p + p{margin-top:16px}
-.prose blockquote cite,.prose figcaption,.prose .wp-element-caption,.prose .wp-caption-text{display:block;font-family:var(--mono);font-size:12px;line-height:1.5;letter-spacing:.48px;font-style:normal;color:var(--t3)}
-.prose blockquote cite{margin-top:12px;text-transform:uppercase}
+.prose figcaption,.prose .wp-element-caption,.prose .wp-caption-text{display:block;font-size:14px;line-height:1.5;letter-spacing:0;font-style:normal;color:var(--t3)}
+.prose blockquote cite{display:block;margin-top:12px;font-family:var(--mono);font-size:12px;line-height:1.5;letter-spacing:.48px;font-style:normal;text-transform:uppercase;color:var(--t3)}
 .prose .wp-block-pullquote{padding:40px 32px;border-radius:20px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);text-align:center}
 .prose .wp-block-pullquote blockquote{border:0;padding:0;font-size:22px;line-height:1.45;letter-spacing:-.01em}
 .prose img{border-radius:14px;height:auto}

@@ -212,7 +212,7 @@
 	function showWait(box) {
 		var sp = d.createElement('span');
 		sp.setAttribute('aria-hidden', 'true');
-		sp.style.cssText = 'position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;z-index:20;pointer-events:none;box-sizing:border-box';
+		sp.style.cssText = 'position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border:3px solid rgba(255,255,255,.14);border-top-color:#c6ff3d;border-radius:50%;z-index:20;pointer-events:none;box-sizing:border-box';
 		box.appendChild(sp);
 		if (sp.animate) {
 			sp.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 800, iterations: Infinity });

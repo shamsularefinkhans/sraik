@@ -1,5 +1,5 @@
 /*!
- * SRAIK Player 1.4.0 — Code Craft skin (obsidian / lime).
+ * SRAIK Player 1.3.0 — Code Craft skin (obsidian / lime).
  * Self-contained: on vip.sraik.com (Tutor LMS) base.css is not loaded, so the
  * design tokens are scoped to .sraik-player here instead of read from :root.
  * No clamp(): LiteSpeed's optimizer mangles it on this site.
@@ -993,6 +993,12 @@ html.sraik-player-lock body { overflow: hidden; }
 	.sraik-player.sp-ui .sp-center { opacity: 1; visibility: visible; }
 	.sraik-player.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
 	.sraik-player .sp-toast { top: 10px; padding: 7px 12px 7px 10px; font-size: 12px; }
+}
+
+/* Big screens (fullscreen on a desktop): the primary button scales with the picture. */
+@container (min-width: 1100px) {
+	.sraik-player.sp-fs .sp-big { width: 84px; height: 84px; box-shadow: 0 0 0 12px rgba(198, 255, 61, .14), 0 20px 48px rgba(0, 0, 0, .5); }
+	.sraik-player.sp-fs .sp-big .sp-ico { flex-basis: 34px; width: 34px; height: 34px; }
 }
 
 /* Very narrow: icons shrink a touch, every target stays 40px. */

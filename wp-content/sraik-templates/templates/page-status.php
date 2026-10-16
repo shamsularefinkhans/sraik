@@ -36,15 +36,7 @@ if ( '' === $sub_url ) {
 
 /* Summary line under the overall state. */
 if ( $v['last'] ) {
-	$sum = sprintf( '%d of %d components healthy.', $v['healthy'], $v['total'] );
-	if ( null === $v['since'] ) {
-		$sum .= ' No incidents reported.';
-	} elseif ( $v['since'] < 1 ) {
-		$sum .= ' Last incident today.';
-	} else {
-		$sum .= sprintf( ' No incidents in the last %d %s.', $v['since'], 1 === $v['since'] ? 'day' : 'days' );
-	}
-	$sum .= ' Last check ' . sraik_status_date( 'H:i', $v['last'] ) . ' ' . $tz . ( time() - $v['last'] > DAY_IN_SECONDS ? ', ' . sraik_status_date( 'M j', $v['last'] ) : '' ) . '.';
+	$sum = sprintf( '%d of %d components healthy · last check %s %s', $v['healthy'], $v['total'], sraik_status_date( time() - $v['last'] > DAY_IN_SECONDS ? 'M j, H:i' : 'H:i', $v['last'] ), $tz );
 } else {
 	$sum = 'Monitoring has just started — the first results appear within a few minutes.';
 }
@@ -157,13 +149,17 @@ sraik_part( 'nav.php' );
         <?php
         foreach ( $c['charts'] as $key => $label ) :
           $smp  = isset( $v['samples'][ $key ] ) ? $v['samples'][ $key ] : array();
-          $vals = array();
+          $vals  = array();
+          $first = 0;
           foreach ( $smp as $s ) {
             if ( 2 !== (int) $s[1] && $s[2] > 0 ) {
               $vals[] = (int) $s[2];
+              $first  = $first ? $first : (int) $s[0];
             }
           }
-          $svg = sraik_status_spark( $smp, $key );
+          $svg   = sraik_status_spark( $smp, $key );
+          /* The line spans the samples we have: label its real start until a full day exists. */
+          $from = ( ! $first || time() - $first > 23 * HOUR_IN_SECONDS ) ? '24h ago' : sraik_status_date( 'H:i', $first ) . ' ' . $tz;
           ?>
         <div class="st-chart" data-appear>
           <div class="st-chart-head">
@@ -181,7 +177,7 @@ sraik_part( 'nav.php' );
             <?php else : ?>
             <div class="st-chart-empty"><?php echo esc_html( $c['perf_empty'] ); ?></div>
             <?php endif; ?>
-            <div class="st-chart-axis"><span>24h ago</span><span>Now</span></div>
+            <div class="st-chart-axis"><span><?php echo esc_html( $from ); ?></span><span>Now</span></div>
           </div>
         </div>
         <?php endforeach; ?>

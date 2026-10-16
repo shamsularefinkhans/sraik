@@ -102,6 +102,8 @@
   .fq-topics{gap:40px}
   .fq-routes-in{padding-bottom:72px}
   .fq-rgrid{grid-template-columns:1fr}
+  .fq-list .faq-q{font-size:18px;line-height:27px}
+  .fq-list .faq-a-in{font-size:16px;line-height:27.2px}
   .fq-route-t{font-size:17px;line-height:22.1px;letter-spacing:-.17px}
 }
 @media (max-width:1199.98px){

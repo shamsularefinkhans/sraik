@@ -28,7 +28,7 @@ $email = sraik_contact( 'email' );
           <span class="lg-toc-l"><?php echo esc_html( $ui['contents'] ); ?></span>
           <div class="lg-toc-list">
             <?php foreach ( $doc['sections'] as $i => $sec ) : ?>
-            <a href="#<?php echo esc_attr( $sec['id'] ); ?>"><span data-panel="en"><?php echo esc_html( $sec['title'][0] ); ?></span><span data-panel="bn" lang="bn" hidden><?php echo esc_html( $sec['title'][1] ); ?></span></a>
+            <a href="#<?php echo esc_attr( $sec['id'] ); ?>"<?php echo 0 === $i ? ' class="is-active"' : ''; ?>><span data-panel="en"><?php echo esc_html( $sec['title'][0] ); ?></span><span data-panel="bn" lang="bn" hidden><?php echo esc_html( $sec['title'][1] ); ?></span></a>
             <?php endforeach; ?>
           </div>
         </div>
@@ -92,7 +92,7 @@ $email = sraik_contact( 'email' );
           <?php foreach ( $sec['cards'] as $cd ) : ?>
           <div class="lg-cmd">
             <span class="lg-cmd-k"><span aria-hidden="true">$</span><?php echo esc_html( $cd[0] ); ?></span>
-            <h3 class="t-title-s"><?php echo esc_html( $cd[1] ); ?></h3>
+            <h3><?php echo esc_html( $cd[1] ); ?></h3>
             <p><?php echo esc_html( $cd[2] ); ?></p>
             <span class="lg-cmd-f" lang="bn"><?php echo esc_html( $cd[3] ); ?></span>
           </div>

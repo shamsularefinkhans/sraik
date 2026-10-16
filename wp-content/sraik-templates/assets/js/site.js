@@ -177,7 +177,7 @@
 		links.forEach(function (a) { var s = d.getElementById(a.getAttribute('href').slice(1)); if (s) { map[s.id] = a; } });
 		var secs = Object.keys(map).map(function (id) { return d.getElementById(id); });
 		if (!secs.length || !('IntersectionObserver' in w)) { return; }
-		var current = null;
+		var current = toc.querySelector('a.is-active');
 		var obs = new IntersectionObserver(function (entries) {
 			entries.forEach(function (en) {
 				if (en.isIntersecting) {

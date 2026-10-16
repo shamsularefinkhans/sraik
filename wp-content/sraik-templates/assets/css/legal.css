@@ -45,6 +45,7 @@
 .lg-tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .lg-tcard{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:16px 20px 22px}
 .lg-tcard .orb.lg-orb{height:100px}
+.lg-tcard h3,.lg-cmd h3{font-size:18px;line-height:23.4px;font-weight:500;letter-spacing:-.18px;color:var(--t1)}
 .lg-tcard p{color:var(--t2);font-size:14px;line-height:21px}
 
 /* ---------- body: contents + sections ---------- */
@@ -140,7 +141,7 @@
   .lg-tabs a{padding:8px 12px 8px 10px}
   .lg-tldr-in{padding-bottom:44px}
   .lg-tgrid{grid-template-columns:1fr}
-  .lg-tcard .t-title-s{font-size:17px;line-height:22.1px}
+  .lg-tcard h3,.lg-cmd h3{font-size:17px;line-height:22.1px;letter-spacing:-.17px}
   .lg-body-in{padding:4px var(--pad-x) 72px}
   .lg-sec-row{flex-direction:column;gap:32px}
   .lg-note{flex:none;width:100%}

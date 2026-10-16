@@ -22,7 +22,7 @@ $sb = $c['sidebar'];
           <span class="fq-toc-l"><?php echo esc_html( $sb['topics_l'] ); ?></span>
           <div class="fq-toc-list">
             <?php foreach ( $groups as $i => $g ) : ?>
-            <a href="#<?php echo esc_attr( $g['slug'] ); ?>"><?php echo esc_html( $g['title'] ); ?></a>
+            <a href="#<?php echo esc_attr( $g['slug'] ); ?>"<?php echo 0 === $i ? ' class="is-active"' : ''; ?>><?php echo esc_html( $g['title'] ); ?></a>
             <?php endforeach; ?>
           </div>
         </div>

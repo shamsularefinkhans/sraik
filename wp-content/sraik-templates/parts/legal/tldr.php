@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
       <?php foreach ( $doc['tldr'] as $i => $t ) : ?>
       <div class="card lg-tcard" data-appear style="--ad:<?php echo esc_attr( 0.06 * $i ); ?>s">
         <?php echo sraik_orb( $t[0], array( 'cls' => 'lg-orb' ) ); // phpcs:ignore ?>
-        <h3 class="t-title-s"><?php echo esc_html( $t[1] ); ?></h3>
+        <h3><?php echo esc_html( $t[1] ); ?></h3>
         <p><?php echo esc_html( $t[2] ); ?></p>
       </div>
       <?php endforeach; ?>

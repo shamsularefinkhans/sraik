@@ -110,10 +110,15 @@ function sraik_post_author( $post_id ) {
 
 /** Plain-text excerpt of N words. */
 function sraik_post_excerpt( $post_id, $words = 24 ) {
+	if ( post_password_required( $post_id ) ) {
+		return '';
+	}
 	$ex = (string) get_post_field( 'post_excerpt', $post_id );
 	if ( '' === trim( $ex ) ) {
 		$ex = (string) get_post_field( 'post_content', $post_id );
 	}
+	/* Block HTML often has no whitespace between paragraphs: keep words apart. */
+	$ex = preg_replace( '#</(p|h[1-6]|li|blockquote|figcaption|td|th|div)>#i', '</$1> ', $ex );
 	return wp_trim_words( wp_strip_all_tags( strip_shortcodes( $ex ) ), $words, '…' );
 }
 
@@ -134,7 +139,7 @@ function sraik_blog_exclude( $q ) {
 	if ( is_admin() || ! $q->is_main_query() ) {
 		return;
 	}
-	if ( 'blog' === $q->get( 'sraik_route' ) || ( $q->is_home() && ! $q->get( 'sraik_route' ) ) ) {
+	if ( 'blog' === $q->get( 'sraik_route' ) || ( $q->is_home() && ! $q->get( 'sraik_route' ) ) || $q->is_date() || $q->is_author() || $q->is_search() ) {
 		$ids = sraik_hidden_cat_ids();
 		if ( $ids ) {
 			$q->set( 'category__not_in', $ids );

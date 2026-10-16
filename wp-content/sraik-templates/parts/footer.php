@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $sraik_f    = sraik_config( 'footer' );
-$sraik_here = untrailingslashit( wp_parse_url( home_url( add_query_arg( array() ) ), PHP_URL_PATH ) );
+$sraik_here = untrailingslashit( (string) wp_parse_url( home_url( add_query_arg( array() ) ), PHP_URL_PATH ) );
 ?>
 <footer class="foot">
   <div class="foot-in">
@@ -25,7 +25,7 @@ $sraik_here = untrailingslashit( wp_parse_url( home_url( add_query_arg( array() 
         <?php
         foreach ( $sraik_links as $sraik_l ) :
           $sraik_u   = sraik_href( $sraik_l[1] );
-          $sraik_cur = ( untrailingslashit( wp_parse_url( $sraik_u, PHP_URL_PATH ) ) === $sraik_here && false === strpos( $sraik_l[1], '#' ) );
+          $sraik_cur = ( untrailingslashit( (string) wp_parse_url( $sraik_u, PHP_URL_PATH ) ) === $sraik_here && false === strpos( $sraik_l[1], '#' ) );
           ?>
         <a href="<?php echo esc_url( $sraik_u ); ?>"<?php echo $sraik_cur ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $sraik_l[0] ); ?></a>
         <?php endforeach; ?>

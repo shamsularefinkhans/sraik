@@ -24,6 +24,7 @@
 .pcard:hover .pcard-read .ico{transform:translate(2px,-2px)}
 @media (min-width:810px) and (max-width:1199.98px){
   .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .pcard-title{font-size:19px;line-height:28.5px}
 }
 @media (max-width:809.98px){
   .pgrid{grid-template-columns:1fr;gap:16px}

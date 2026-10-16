@@ -53,7 +53,7 @@ while ( have_posts() ) :
           <?php endif; ?>
           <p class="sp-by" data-appear style="--ad:.2s">
             <span class="sp-by-l"><?php echo esc_html( $c['single']['by'] ); ?></span>
-            <a class="sp-by-n" href="<?php echo esc_url( get_author_posts_url( (int) get_the_author_meta( 'ID' ) ) ); ?>"><?php echo esc_html( sraik_post_author( $sp_id ) ); ?></a>
+            <span class="sp-by-n"><?php echo esc_html( sraik_post_author( $sp_id ) ); ?></span>
           </p>
         </header>
         <?php if ( $sp_cover ) : ?>

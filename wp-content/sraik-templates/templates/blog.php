@@ -146,7 +146,7 @@ sraik_part( 'nav.php' );
       </div>
       <?php elseif ( ! $bp_featured ) : ?>
         <?php
-        $bp_empty_key = 'search' === $bp_kind ? 'search' : ( 'blog' === $bp_view ? 'blog' : 'other' );
+        $bp_empty_key = 'search' === $bp_kind ? 'search' : ( 'blog' === $bp_view && 1 === $bp_paged ? 'blog' : 'other' );
         sraik_part( 'blog/empty.php', array( 'e' => $c['empty'][ $bp_empty_key ], 'search' => 'search' === $bp_kind, 'h_id' => 'bp-latest' ) );
         ?>
       <?php endif; ?>

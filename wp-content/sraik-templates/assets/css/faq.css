@@ -1,0 +1,109 @@
+/* ==========================================================================
+   faq.css — /faq/ (template: faq.html). The accordion itself is the shared
+   .faq-* block in home.css; this file adds the page around it.
+   ========================================================================== */
+
+/* ---------- hero: copy + "help --topics" terminal ---------- */
+.fq-hero .hero-bg .spot{left:calc(50% - 120px);top:-380px;width:1000px;height:760px}
+.fq-hero-in{position:relative;z-index:1;width:100%;max-width:calc(var(--maxw) + 2 * var(--pad-x));margin:0 auto;padding:152px var(--pad-x) 88px;display:flex;align-items:center;gap:64px}
+.fq-copy{flex:0 0 560px;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.fq-copy .eyebrow{align-self:flex-start}
+.fq-sub{color:var(--t2);font-size:16px;line-height:24.8px}
+.fq-meta{font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--t3)}
+
+.fq-term{position:relative;flex:0 0 480px;min-width:0;margin-left:auto;background:var(--card-grad);border-radius:16px;box-shadow:var(--card-shadow)}
+.fq-term::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line-2);pointer-events:none}
+.fq-term-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.fq-term-dots{display:flex;gap:6px}
+.fq-term-dots i{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 0 rgba(255,255,255,.2)}
+.fq-term-title{margin-left:14px;font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--t3);white-space:nowrap}
+.fq-term-body{display:flex;flex-direction:column;gap:4px;padding:18px 14px 20px}
+.fq-term-cmd{display:flex;align-items:center;gap:8px;padding:0 6px 10px;font-family:var(--mono);font-size:13px;line-height:18.2px;color:var(--t1)}
+.fq-term-cmd span:first-child{color:var(--teal)}
+.fq-term-l,.fq-toc-l{font-family:var(--mono);font-size:11px;line-height:15.4px;letter-spacing:.44px;text-transform:uppercase;color:var(--t3)}
+.fq-term-list{display:flex;flex-direction:column;gap:4px}
+.fq-term-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 10px;border-radius:8px;transition:background .2s}
+.fq-term-list a:hover{background:var(--surface-2)}
+.fq-term-name{display:flex;align-items:center;gap:10px;min-width:0;font-family:var(--mono);font-size:13px;line-height:18.2px;color:var(--t1)}
+.fq-term-name .ico{color:var(--teal);flex:none}
+.fq-term-name span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fq-term-n{display:flex;align-items:center;gap:8px;flex:none;font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--t3)}
+.fq-term-n .ico{transition:transform .25s var(--ease)}
+.fq-term-list a:hover .fq-term-n .ico{transform:translateX(2px);color:var(--t1)}
+.fq-term-foot{font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--t3)}
+
+/* ---------- body: sticky sidebar + topics ---------- */
+.fq-body,.fq-routes{width:100%;background:var(--bg);display:flex;justify-content:center}
+.fq-body-in{width:100%;max-width:calc(var(--maxw) + 2 * var(--pad-x));padding:24px var(--pad-x) 96px;display:flex;align-items:flex-start;gap:64px}
+.fq-side{flex:0 0 232px;position:sticky;top:calc(var(--nav-h) + 24px);display:flex;flex-direction:column;gap:24px}
+.fq-toc{display:flex;flex-direction:column;gap:28px}
+.fq-toc-grp{display:flex;flex-direction:column;gap:10px}
+.fq-toc-list{display:flex;flex-direction:column;border-left:1px solid var(--line)}
+.fq-toc-list a{position:relative;display:flex;align-items:center;gap:6px;padding:7px 0 7px 14px;font-size:14px;line-height:19.6px;color:var(--t2);transition:color .2s}
+.fq-toc-list a::before{content:"";position:absolute;left:-1px;top:0;bottom:0;width:2px;background:var(--lime);opacity:0;transition:opacity .2s}
+.fq-toc-list a:hover,.fq-toc-list a.is-active{color:var(--t1)}
+.fq-toc-list a.is-active::before{opacity:1}
+.fq-toc-list .ico{flex:none}
+.fq-help{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:18px;background:var(--surface);border-radius:16px}
+.fq-help::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.fq-help-t{font-size:14px;line-height:21px;color:var(--t1)}
+.fq-help-p{font-size:13px;line-height:19.5px;color:var(--t2)}
+.fq-help-a{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;padding-top:4px;font-size:14px;line-height:21px;color:var(--t1)}
+.fq-help-a:hover{color:var(--lime)}
+
+.fq-topics{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:72px}
+.fq-topic{display:flex;flex-direction:column;gap:20px;scroll-margin-top:calc(var(--nav-h) + 24px)}
+.fq-kick{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;line-height:16.8px}
+.fq-kick-n{color:var(--teal)}
+.fq-kick-s{color:var(--t2);letter-spacing:.48px;text-transform:uppercase;white-space:nowrap}
+.fq-kick-rule{flex:1 1 auto;height:1px;background:var(--line)}
+.fq-kick-c{color:var(--t3);white-space:nowrap}
+.fq-topic-h{display:flex;align-items:center;gap:14px}
+.fq-gloss{width:36px;height:36px;position:relative}
+.fq-gloss::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line)}
+.fq-list{max-width:none;margin:0;width:100%}
+.fq-list .faq-item:last-child{border-bottom:0}
+.fq-list .faq-item{scroll-margin-top:calc(var(--nav-h) + 24px)}
+
+/* ---------- still stuck? ---------- */
+.fq-routes-in{width:100%;max-width:calc(var(--maxw) + 2 * var(--pad-x));padding:0 var(--pad-x) 120px;display:flex;flex-direction:column;gap:32px}
+.fq-routes-head{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.fq-routes-k{font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--teal)}
+.fq-rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fq-route{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px;background:var(--surface);border-radius:16px;transition:transform .3s var(--ease)}
+.fq-route::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none;transition:border-color .3s}
+.fq-route:hover{transform:translateY(-2px)}
+.fq-route:hover::after{border-color:rgba(255,255,255,.14)}
+.fq-route-top{display:flex;align-items:center;justify-content:space-between;width:100%}
+.fq-route-arr{color:var(--t2);transition:transform .25s var(--ease),color .25s}
+.fq-route:hover .fq-route-arr{transform:translate(2px,-2px);color:var(--t1)}
+.fq-route-copy{display:flex;flex-direction:column;gap:14px}
+.fq-route-t{font-size:18px;line-height:23.4px;font-weight:500;letter-spacing:-.18px;color:var(--t1)}
+.fq-route-p{font-size:14px;line-height:21px;color:var(--t2)}
+
+/* ---------- tablet ---------- */
+@media (min-width:810px) and (max-width:1199.98px){
+  .fq-hero .hero-bg .spot{left:calc(50% - 95px)}
+  .fq-hero-in{flex-direction:column;align-items:flex-start;gap:48px;padding:132px var(--pad-x) 72px}
+  .fq-copy{flex:none;width:100%}
+  .fq-sub{max-width:560px}
+  .fq-term{flex:none;width:100%;margin-left:0}
+  .fq-body-in{padding:20px var(--pad-x) 76px}
+  .fq-topics{gap:56px}
+  .fq-routes-in{padding-bottom:96px}
+}
+/* ---------- mobile ---------- */
+@media (max-width:809.98px){
+  .fq-hero .hero-bg .spot{left:50%}
+  .fq-hero-in{flex-direction:column;align-items:flex-start;gap:40px;padding:104px var(--pad-x) 52px}
+  .fq-copy{flex:none;width:100%}
+  .fq-term{flex:none;width:100%;margin-left:0}
+  .fq-body-in{padding:16px var(--pad-x) 56px}
+  .fq-topics{gap:40px}
+  .fq-routes-in{padding-bottom:72px}
+  .fq-rgrid{grid-template-columns:1fr}
+  .fq-route-t{font-size:17px;line-height:22.1px;letter-spacing:-.17px}
+}
+@media (max-width:1199.98px){
+  .fq-side{display:none}
+}

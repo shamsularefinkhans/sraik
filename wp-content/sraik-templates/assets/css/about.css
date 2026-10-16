@@ -1,0 +1,142 @@
+/* ==========================================================================
+   about.css — /about/ (template: carrer.html)
+   Sections here stack with bottom padding only (the template's careers
+   sections have no top padding), so .ab-sec zeroes the shared top pad.
+   ========================================================================== */
+
+.ab-sec{padding-top:0}
+.ab-sec--list{gap:48px}
+@media (min-width:810px) and (max-width:1199.98px){.ab-sec--list{gap:40px}}
+@media (max-width:809.98px){.ab-sec--list{gap:32px}}
+
+/* shared bits ------------------------------------------------------------- */
+.ab-kicker{font-family:var(--mono);font-size:11px;line-height:15.4px;letter-spacing:.44px;color:var(--teal);text-transform:uppercase}
+.ab-tags{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ab-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);font-family:var(--mono);font-size:11px;line-height:15.4px;color:var(--t2);white-space:nowrap}
+.ab-tag .ico{flex:none}
+.ab-tag--teal{background:var(--teal-10);box-shadow:inset 0 0 0 1px var(--teal-26);color:var(--teal)}
+.ab-head{display:flex;align-items:center;gap:12px;width:100%}
+.ab-gloss{width:36px;height:36px}
+.ab-num{font-family:var(--mono);font-size:12px;line-height:19.2px;letter-spacing:.96px;color:var(--teal)}
+.ab-head-l{font-family:var(--mono);font-size:12px;line-height:19.2px;font-weight:400;letter-spacing:.96px;color:var(--teal);text-transform:uppercase;white-space:nowrap}
+.ab-rule{flex:1 1 auto;height:1px;background:var(--line)}
+
+/* hero -------------------------------------------------------------------- */
+.ab-hero .hero-bg .spot{width:1000px;height:760px;top:-360px}
+.ab-hero-in{position:relative;z-index:1;width:100%;max-width:1280px;margin:0 auto;padding:168px var(--pad-x) 64px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.ab-title{max-width:880px}
+.ab-sub{max-width:640px;color:var(--t2);font-size:16px;line-height:24.8px}
+.ab-btns{gap:12px;padding-top:8px}
+
+/* photo collage: short / tall / short frames */
+.ab-photos{display:flex;align-items:center;gap:16px}
+.ab-ph{position:relative;flex:1 1 0;min-width:0;height:300px;margin:0;border-radius:20px;overflow:hidden;background:var(--surface)}
+.ab-ph::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.ab-ph--1{height:360px}
+/* The template's photos are monochrome; ours are tinted the same way. */
+.ab-ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+
+@media (min-width:810px) and (max-width:1199.98px){
+  .ab-hero-in{padding:148px var(--pad-x) 52px}
+  .ab-ph{height:220px}
+  .ab-ph--1{height:260px}
+}
+@media (max-width:809.98px){
+  .ab-hero-in{padding:120px var(--pad-x) 40px}
+  .ab-btns{flex-direction:column;width:100%!important}
+  .ab-btns .btn{width:280px;max-width:100%}
+  .ab-ph--0,.ab-ph--2{display:none}
+  .ab-ph--1{height:240px}
+}
+
+/* mentor ------------------------------------------------------------------ */
+.ab-mentor-wrap{display:flex;flex-direction:column;gap:24px}
+.ab-mentor{display:grid;grid-template-columns:400px minmax(0,1fr);gap:40px;padding:24px;border-radius:20px;overflow:visible}
+/* The bio runs much taller than the portrait: the photo rides along. */
+.ab-mentor-ph{position:sticky;top:calc(var(--nav-h) + 32px);align-self:start;aspect-ratio:3/4;margin:0;border-radius:14px;overflow:hidden;background:#141518}
+.ab-mentor-ph::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.ab-mentor-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.ab-mentor-body{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:16px 16px 8px 0;min-width:0}
+.ab-mentor-role{color:var(--t2);font-size:14px;line-height:21px}
+.ab-mentor-body .ab-tags{margin:4px 0 8px}
+.ab-bio{display:flex;flex-direction:column;gap:14px;color:var(--t2);font-size:15px;line-height:1.75}
+.ab-mentor-foot{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px;padding-top:20px;border-top:1px solid var(--line)}
+.ab-sign{width:auto;height:64px}
+.ab-team{display:flex;flex-direction:column;gap:20px}
+.ab-team-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.ab-member{position:relative;display:flex;flex-direction:column;gap:6px;padding:18px 20px;background:var(--surface);border-radius:16px}
+.ab-member::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.ab-member-n{font-size:16px;line-height:22px;font-weight:500;letter-spacing:-.01em;color:var(--t1)}
+.ab-member-r{font-family:var(--mono);font-size:11px;line-height:15.4px;letter-spacing:.44px;color:var(--teal);text-transform:uppercase}
+@media (min-width:810px) and (max-width:1199.98px){
+  .ab-mentor{grid-template-columns:300px minmax(0,1fr);gap:32px}
+  .ab-team-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:809.98px){
+  .ab-mentor{grid-template-columns:1fr;gap:24px;padding:16px}
+  .ab-mentor-ph{position:relative;top:auto;aspect-ratio:4/5}
+  .ab-mentor-body{padding:0 8px 8px}
+  .ab-bio{font-size:15px;line-height:1.7}
+  .ab-team-grid{grid-template-columns:1fr}
+}
+
+/* what we stand for (benefits) -------------------------------------------- */
+.ab-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ab-value{display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding:20px 24px 28px}
+.ab-value p{color:var(--t2);font-size:14px;line-height:21px}
+@media (min-width:810px) and (max-width:1199.98px){.ab-values{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:809.98px){.ab-values{grid-template-columns:1fr;gap:16px}}
+
+/* how we work ------------------------------------------------------------- */
+.ab-princ{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.ab-pr{display:flex;flex-direction:column;gap:14px}
+.ab-pr p{color:var(--t2);font-size:16px;line-height:24.8px}
+@media (max-width:809.98px){.ab-princ{grid-template-columns:1fr;gap:16px}}
+
+/* programs (open roles) --------------------------------------------------- */
+.ab-rows{width:100%;max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.ab-row{position:relative;display:flex;align-items:center;gap:24px;padding:22px 24px;background:var(--surface);border-radius:16px;transition:background-color .25s var(--ease)}
+.ab-row::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none;transition:border-color .25s}
+.ab-row:hover{background:#121315}
+.ab-row:hover::after{border-color:var(--line-2)}
+.ab-row-txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
+.ab-row-t,.ab-step h3{font-size:18px;line-height:23.4px;font-weight:500;letter-spacing:-.18px;color:var(--t1)}
+.ab-row-d{font-size:14px;line-height:21px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ab-row-tags{display:flex;align-items:center;gap:8px;flex:none}
+.ab-row-go{flex:none;width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--t1)}
+.ab-row-go .ico{transition:transform .25s var(--ease)}
+.ab-row:hover .ab-row-go .ico{transform:translate(2px,-2px)}
+@media (max-width:809.98px){
+  .ab-row{flex-direction:column;align-items:flex-start;gap:12px;padding:18px}
+  .ab-row-txt{width:100%}
+  .ab-row-t,.ab-step h3{font-size:17px;line-height:22.1px;letter-spacing:-.17px}
+  .ab-row-tags{flex-wrap:wrap;flex:0 1 auto}
+  .ab-row-go{display:none}
+}
+
+/* a student's journey (hiring process) ------------------------------------ */
+.ab-steps{display:flex;align-items:flex-start}
+.ab-step{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding-right:20px}
+.ab-step-rail{display:flex;align-items:center;width:100%;height:14px}
+.ab-step-rail i{flex:none;width:14px;height:14px;border-radius:999px;background:radial-gradient(120% 120% at 50% 0%,#464952 0%,#16171b 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),0 4px 10px 0 rgba(0,0,0,.6)}
+.ab-step-rail b{flex:1 1 auto;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.03) 100%)}
+.ab-step.is-on .ab-step-rail i{background:var(--t1);box-shadow:inset 0 0 0 2px #0e0f11,0 0 12px 2px rgba(255,255,255,.45)}
+.ab-step-n{font-family:var(--mono);font-size:11px;line-height:15.4px;letter-spacing:.44px;color:var(--teal);text-transform:uppercase}
+.ab-step p{color:var(--t2);font-size:14px;line-height:21px}
+@media (max-width:1199.98px){
+  .ab-steps{flex-direction:column;gap:28px}
+  .ab-step{flex:none;width:100%}
+}
+
+/* direct line (open application) ------------------------------------------ */
+.ab-open{position:relative;display:flex;align-items:center;gap:48px;padding:40px;background:var(--surface);border-radius:20px;overflow:hidden;isolation:isolate}
+.ab-open::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.ab-open-glow{position:absolute;left:620px;top:-180px;width:700px;height:500px;background:radial-gradient(50% 50% at 50% 50%,rgba(198,255,61,.07) 0%,rgba(198,255,61,.02) 50%,rgba(198,255,61,0) 75%);pointer-events:none;z-index:-1}
+.ab-open-copy{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.ab-open-p{max-width:560px;color:var(--t2);font-size:16px;line-height:24.8px}
+.ab-open-facts{margin-top:4px}
+.ab-open-act{flex:none}
+@media (max-width:809.98px){
+  .ab-open{flex-direction:column;align-items:flex-start;gap:24px;padding:28px 24px}
+  .ab-open .ab-tag{white-space:normal}
+}

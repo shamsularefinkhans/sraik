@@ -1,0 +1,96 @@
+/* ==========================================================================
+   changelog.css — /changelog/ (template "changelog"): centred hero, then a
+   timeline: date + version column, a line with dots, release cards.
+   Values measured from spec/changelog-{1440,1000,390}.txt.
+   ========================================================================== */
+
+/* ---------- hero ---------- */
+.cl-hero .hero-bg .spot{top:-360px;width:1000px;height:760px}
+.cl-hero-in{position:relative;z-index:1;width:100%;max-width:1280px;margin:0 auto;padding:168px var(--pad-x) 88px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.cl-hero-title{max-width:820px}
+.cl-hero-sub{max-width:640px;color:var(--t2);font-size:16px;line-height:24.8px}
+.cl-hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;padding-top:8px}
+
+/* ---------- timeline ---------- */
+.cl-in{width:100%;max-width:calc(var(--maxw) + 2 * var(--pad-x));padding:24px var(--pad-x) 120px;display:flex;flex-direction:column;align-items:center}
+.cl-list{width:100%;max-width:960px;display:flex;flex-direction:column}
+.cl-item{display:grid;grid-template-columns:180px minmax(0,1fr);align-items:start}
+.cl-meta{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:6px 24px 0 0}
+.cl-date{font-family:var(--mono);font-size:13px;line-height:18.2px;color:var(--t2)}
+.cl-ver{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;background:var(--teal-10);box-shadow:inset 0 0 0 1px var(--teal-26);font-family:var(--mono);font-size:11px;line-height:15.4px;color:var(--teal);white-space:nowrap}
+.cl-body{position:relative;display:flex;flex-direction:column;gap:20px;padding:0 0 80px 44px;min-width:0}
+.cl-body::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}
+.cl-dot{position:absolute;left:-8px;top:6px;width:15px;height:15px;border-radius:999px;background:var(--teal);border:3px solid var(--bg);z-index:1}
+
+/* release card */
+.cl-card{position:relative;height:190px;padding:22px 24px 18px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;background:var(--card-grad);border-radius:20px;box-shadow:var(--card-shadow);overflow:hidden;isolation:isolate}
+.cl-card::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--line);pointer-events:none}
+.cl-card-glow{position:absolute;left:360px;top:-190px;width:520px;height:380px;background:radial-gradient(50% 50% at 50% 50%,rgba(198,255,61,.08) 0%,rgba(198,255,61,.03) 45%,rgba(198,255,61,0) 72%);pointer-events:none;z-index:-1}
+.cl-card-top{position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cl-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:rgba(7,8,10,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-family:var(--mono);font-size:11px;line-height:15.4px;letter-spacing:.44px;text-transform:uppercase;color:var(--t1);white-space:nowrap}
+.cl-chip i{width:6px;height:6px;border-radius:999px;background:var(--teal);flex:none}
+.cl-brand{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;line-height:15.4px;color:var(--t2);white-space:nowrap}
+.cl-brand-mark{width:20px;height:20px;border-radius:6px;background:var(--lime);display:flex;align-items:center;justify-content:center;color:var(--ink);box-shadow:inset 0 1px 0 0 rgba(255,255,255,.55),inset 0 -2px 4px 0 rgba(0,0,0,.25),0 4px 12px 0 rgba(198,255,61,.25);flex:none}
+.cl-brand-mark svg{width:10px;height:12px}
+.cl-big{position:relative;z-index:1;font-family:var(--mono);font-size:72px;line-height:72px;font-weight:500;letter-spacing:-.04em;color:var(--t1);white-space:nowrap}
+
+/* orbit badge on the right of the card */
+.cl-orbit{position:absolute;right:2px;top:12px;width:200px;height:200px;pointer-events:none}
+.cl-orbit-halo{position:absolute;inset:0;border-radius:999px;background:radial-gradient(50% 50% at 50% 50%,rgba(255,255,255,.05) 0%,rgba(255,255,255,.02) 62%,rgba(255,255,255,0) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.cl-orbit-line{position:absolute;left:-22px;top:100px;width:244px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.14) 25%,rgba(255,255,255,.14) 75%,rgba(255,255,255,0) 100%)}
+.cl-orbit-ring{position:absolute;left:58px;top:58px;width:84px;height:84px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center}
+.cl-orbit-core{position:relative;width:62px;height:62px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--t1);background:radial-gradient(120% 120% at 50% 0,#40434c 0%,#1a1c21 52%,#0b0c0f 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.3),inset 0 -8px 14px rgba(0,0,0,.55),0 16px 36px rgba(0,0,0,.65),0 0 40px rgba(110,231,210,.25)}
+.cl-orbit-core::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid rgba(255,255,255,.16)}
+.cl-orbit-pin{position:absolute;top:38px;width:9px;height:9px;border-radius:999px;background:var(--t1);border:2px solid #0e0f11;box-shadow:0 0 12px 2px rgba(255,255,255,.45)}
+.cl-orbit-pin--l{left:-5px}
+.cl-orbit-pin--r{left:80px}
+
+/* text under the card */
+.cl-title{color:var(--t1)}
+.cl-sum,.cl-content{color:var(--t2);font-size:16px;line-height:24.8px}
+.cl-content > * + *{margin-top:12px}
+.cl-content > p + ul,.cl-content > p + ol{margin-top:0}
+.cl-content ul,.cl-content ol{list-style:none;padding:0}
+.cl-content li{position:relative;padding-left:21px}
+.cl-content ul > li::before{content:"";position:absolute;left:3px;top:11px;width:4px;height:4px;border-radius:999px;background:currentColor}
+.cl-content ol{counter-reset:cl}
+.cl-content ol > li{counter-increment:cl}
+.cl-content ol > li::before{content:counter(cl) ".";position:absolute;left:0;top:0;font-family:var(--mono);font-size:12px}
+.cl-content a{color:var(--t1);text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:3px}
+.cl-content a:hover{text-decoration-color:var(--lime)}
+.cl-content strong,.cl-content b{color:var(--t1);font-weight:500}
+.cl-content code{font-family:var(--mono);font-size:.875em;color:var(--t1)}
+.cl-content h2,.cl-content h3,.cl-content h4{color:var(--t1);font-size:18px;line-height:1.3;font-weight:500;letter-spacing:-.01em}
+.cl-content img{border-radius:12px}
+
+/* pager */
+.cl-pager{width:100%;max-width:960px;display:flex;align-items:center;justify-content:center;gap:16px;padding-left:224px}
+.cl-pager-n{font-family:var(--mono);font-size:12px;line-height:16.8px;color:var(--t3)}
+
+/* ---------- tablet ---------- */
+@media (min-width:810px) and (max-width:1199.98px){
+  .cl-hero-in{padding:148px var(--pad-x) 72px}
+  .cl-in{padding:20px var(--pad-x) 96px}
+}
+
+/* ---------- mobile ---------- */
+@media (max-width:809.98px){
+  .cl-hero-in{padding:120px var(--pad-x) 52px}
+  .cl-hero-btns{flex-direction:column;width:100%}
+  .cl-hero-btns .btn{width:280px;max-width:100%}
+  .cl-in{padding:16px var(--pad-x) 72px}
+  .cl-item{display:flex;flex-direction:column;gap:14px}
+  .cl-meta{flex-direction:row;align-items:center;gap:10px;padding:0 0 0 24px}
+  .cl-meta:empty{display:none}
+  .cl-body{width:100%;padding:0 0 56px 24px}
+  .cl-card{height:150px;padding:18px 20px 16px}
+  .cl-big{font-size:48px;line-height:48px}
+  .cl-orbit{right:-10px;width:156px;height:156px}
+  .cl-orbit-line{left:-20px;top:78px;width:196px}
+  .cl-orbit-ring{left:46px;top:46px;width:64px;height:64px}
+  .cl-orbit-core{width:48px;height:48px}
+  .cl-orbit-core .ico{width:18px;height:18px}
+  .cl-orbit-pin{top:28px}
+  .cl-orbit-pin--r{left:60px}
+  .cl-pager{padding-left:0;flex-wrap:wrap}
+}

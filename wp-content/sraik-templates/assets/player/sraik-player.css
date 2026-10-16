@@ -1,31 +1,68 @@
 /*!
- * SRAIK Player 1.3.0 — obsidian / crimson.
+ * SRAIK Player 1.4.0 — Code Craft skin (obsidian / lime).
+ * Self-contained: on vip.sraik.com (Tutor LMS) base.css is not loaded, so the
+ * design tokens are scoped to .sraik-player here instead of read from :root.
  * No clamp(): LiteSpeed's optimizer mangles it on this site.
  */
 
 /* ─────────────── frame ─────────────── */
 
 .sraik-player {
+	--sp-bg: #07080a;
+	--sp-s1: #0e0f11;
+	--sp-s2: #16171a;
+	--sp-line: rgba(255, 255, 255, .08);
+	--sp-line-2: rgba(255, 255, 255, .14);
+	--sp-t1: #f4f4f5;
+	--sp-t2: #a1a1aa;
+	--sp-t3: #8b8b94;
+	--sp-ink: #0a0b0d;
+	--sp-lime: #c6ff3d;
+	--sp-lime-hi: #d4ff6a;
+	--sp-teal: #6ee7d2;
+	--sp-red: #f87171;
+	--sp-glass: rgba(7, 8, 10, .72);
+	--sp-gloss: linear-gradient(180deg, #2a2c32 0%, #131418 100%);
+	--sp-gloss-sh: inset 0 1px 0 0 rgba(255, 255, 255, .13), inset 0 0 0 1px rgba(255, 255, 255, .08), 0 8px 18px 0 rgba(0, 0, 0, .5);
+	--sp-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+	--sp-ease: cubic-bezier(.25, .1, .25, 1);
+	--sp-radius: 14px;
+	--sp-inset: 10px;
+
 	position: relative;
 	display: block;
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	margin: 0;
 	padding: 0;
-	background: #000;
-	color: #fff;
+	border-radius: var(--sp-radius);
+	background: var(--sp-bg);
+	color: var(--sp-t1);
 	overflow: hidden;
 	isolation: isolate;
 	container-type: inline-size;
-	font-family: var(--tutor-font-family-body, var(--font-body, "Bricolage Grotesque", "Anek Bangla", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif));
+	font-family: inherit;
 	font-size: 14px;
 	line-height: 1.2;
 	text-align: left;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	user-select: none;
 	outline: none;
+}
+
+/* Hairline ring above every layer, so the frame reads as one card. */
+.sraik-player::after {
+	content: "";
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 12;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 1px var(--sp-line);
+	pointer-events: none;
 }
 
 @supports not (aspect-ratio: 16 / 9) {
@@ -40,7 +77,7 @@
 }
 
 .sraik-player:focus { outline: none; }
-.sraik-player:focus-visible { outline: 2px solid #C8102E; outline-offset: -2px; }
+.sraik-player:focus-visible::after { box-shadow: inset 0 0 0 2px var(--sp-lime); }
 
 /* ─────────────── layers (bottom → top) ─────────────── */
 
@@ -110,19 +147,22 @@
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
 	z-index: 2;
-	background-color: #000;
+	background-color: var(--sp-bg);
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
 	pointer-events: none;
-	transition: opacity .3s ease, visibility .3s ease;
+	transition: opacity .3s var(--sp-ease), visibility .3s var(--sp-ease);
 }
 
+/* Obsidian wash: lifts the play button and the dock off any thumbnail. */
 .sraik-player .sp-poster::after {
 	content: "";
 	position: absolute;
 	top: 0; right: 0; bottom: 0; left: 0;
-	background: rgba(0, 0, 0, .18);
+	background:
+		radial-gradient(ellipse at 50% 50%, rgba(7, 8, 10, 0) 40%, rgba(7, 8, 10, .42) 100%),
+		rgba(7, 8, 10, .16);
 }
 
 .sraik-player.sp-started:not(.sp-ended) .sp-poster,
@@ -144,16 +184,16 @@
 	top: 0; right: 0; bottom: 0; left: 0;
 	z-index: 4;
 	pointer-events: none;
-	background: linear-gradient(to top, rgba(0, 0, 0, .72) 0, rgba(0, 0, 0, .28) 22%, rgba(0, 0, 0, 0) 42%);
+	background: linear-gradient(to top, rgba(7, 8, 10, .62) 0, rgba(7, 8, 10, .22) 24%, rgba(7, 8, 10, 0) 44%);
 	opacity: 0;
 	visibility: hidden;
-	transition: opacity .22s ease, visibility .22s ease;
+	transition: opacity .22s var(--sp-ease), visibility .22s var(--sp-ease);
 }
 
 .sraik-player.sp-touch .sp-scrim {
 	background:
-		linear-gradient(to top, rgba(0, 0, 0, .7) 0, rgba(0, 0, 0, 0) 40%),
-		linear-gradient(rgba(0, 0, 0, .32), rgba(0, 0, 0, .32));
+		linear-gradient(to top, rgba(7, 8, 10, .6) 0, rgba(7, 8, 10, 0) 42%),
+		linear-gradient(rgba(7, 8, 10, .34), rgba(7, 8, 10, .34));
 }
 
 /* ─────────────── buttons (reset first — themes style bare <button>) ─────────────── */
@@ -170,11 +210,12 @@
 	border-radius: 10px;
 	background: transparent;
 	box-shadow: none;
-	color: #fff;
+	color: var(--sp-t1);
 	font: inherit;
 	letter-spacing: normal;
 	text-transform: none;
 	text-decoration: none;
+	text-shadow: none;
 	line-height: 1;
 	cursor: pointer;
 	touch-action: manipulation; /* quick repeat taps are taps, not double-tap zoom */
@@ -189,18 +230,18 @@
 	justify-content: center;
 	width: 40px;
 	height: 40px;
-	transition: background-color .15s ease, opacity .15s ease;
+	transition: background-color .15s var(--sp-ease), box-shadow .15s var(--sp-ease), color .15s var(--sp-ease), opacity .15s var(--sp-ease), transform .25s var(--sp-ease);
 }
 
 .sraik-player .sp-btn:focus { outline: none; }
-.sraik-player .sp-btn:focus-visible,
-.sraik-player .sp-mi:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.sraik-player .sp-btn:focus-visible { outline: 2px solid var(--sp-lime); outline-offset: 1px; }
+.sraik-player .sp-mi:focus-visible { outline: 2px solid var(--sp-lime); outline-offset: -2px; }
 
 .sraik-player .sp-ico {
 	display: block;
-	flex: 0 0 24px;
-	width: 24px;
-	height: 24px;
+	flex: 0 0 22px;
+	width: 22px;
+	height: 22px;
 	pointer-events: none;
 }
 
@@ -211,8 +252,10 @@
 	right: 0;
 	margin-top: 1px;
 	transform: translateY(-50%);
-	font-size: 8.5px;
-	font-weight: 700;
+	font-family: var(--sp-mono);
+	font-size: 8px;
+	font-weight: 600;
+	letter-spacing: -.02em;
 	line-height: 1;
 	text-align: center;
 	font-variant-numeric: tabular-nums;
@@ -244,13 +287,16 @@
 	z-index: 7;
 	display: flex;
 	align-items: center;
-	gap: 32px;
+	gap: 36px;
 	transform: translate(-50%, -50%);
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	transition: opacity .2s ease, visibility .2s ease;
+	transition: opacity .2s var(--sp-ease), visibility .2s var(--sp-ease);
 }
+
+/* The dock sits on the bottom edge; centre the cluster in the space above it. */
+.sraik-player .sp-center { margin-top: -26px; }
 
 .sraik-player .sp-center .sp-btn { pointer-events: auto; }
 
@@ -262,26 +308,34 @@
 	visibility: visible;
 }
 
+/* Primary play: the lime disc with the soft halo (as .hwin-play on the home page). */
 .sraik-player .sp-big {
 	width: 68px;
 	height: 68px;
 	border-radius: 50%;
-	background: #C8102E;
+	background: var(--sp-lime);
+	color: var(--sp-ink);
+	box-shadow: 0 0 0 10px rgba(198, 255, 61, .14), 0 16px 40px rgba(0, 0, 0, .5);
 }
 
-.sraik-player .sp-big .sp-ico { flex-basis: 30px; width: 30px; height: 30px; }
+.sraik-player .sp-big .sp-ico { flex-basis: 28px; width: 28px; height: 28px; }
 .sraik-player .sp-big .i-play { transform: translateX(2px); }
+.sraik-player .sp-big .i-replay { stroke-width: 2.4; }
+.sraik-player .sp-big:focus-visible { outline-offset: 13px; }
 
 .sraik-player .sp-cskip {
 	display: none;
 	width: 52px;
 	height: 52px;
 	border-radius: 50%;
-	background: rgba(0, 0, 0, .42);
+	background: rgba(7, 8, 10, .55);
+	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .1), inset 0 0 0 1px var(--sp-line-2);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
 }
 
 .sraik-player .sp-cskip .sp-ico { flex-basis: 30px; width: 30px; height: 30px; }
-.sraik-player .sp-cskip .sp-num { font-size: 10.5px; }
+.sraik-player .sp-cskip .sp-num { font-size: 9.5px; }
 
 .sraik-player.sp-touch.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
 
@@ -299,10 +353,11 @@
 	z-index: 6;
 	width: 44px;
 	height: 44px;
-	margin: -22px 0 0 -22px;
-	border: 3px solid rgba(255, 255, 255, .22);
-	border-top-color: #fff;
+	margin: -48px 0 0 -22px; /* -22 centre, -26 the cluster's lift above the dock */
+	border: 3px solid rgba(255, 255, 255, .14);
+	border-top-color: var(--sp-lime);
 	border-radius: 50%;
+	box-shadow: 0 0 24px rgba(198, 255, 61, .12);
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
@@ -324,43 +379,55 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 6px;
+	gap: 8px;
 	width: 40%;
-	background: rgba(255, 255, 255, .12);
-	font-size: 13px;
-	font-weight: 600;
+	background: rgba(255, 255, 255, .08);
+	font-family: var(--sp-mono);
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: .02em;
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	transition: opacity .2s ease, visibility .2s ease;
+	transition: opacity .2s var(--sp-ease), visibility .2s var(--sp-ease);
 }
 
-.sraik-player .sp-ripple .sp-ico { flex-basis: 28px; width: 28px; height: 28px; }
+.sraik-player .sp-ripple .sp-ico { flex-basis: 28px; width: 28px; height: 28px; color: var(--sp-lime); }
 .sraik-player .sp-ripple--l { left: 0; border-radius: 0 100% 100% 0 / 0 50% 50% 0; }
 .sraik-player .sp-ripple--r { right: 0; border-radius: 100% 0 0 100% / 50% 0 0 50%; }
 .sraik-player .sp-ripple.is-on { opacity: 1; visibility: visible; }
 
-/* Button / keyboard skips: a quiet pill instead of the full sweep. */
-.sraik-player .sp-ripple.is-soft { background: transparent; }
-.sraik-player .sp-ripple.is-soft .sp-ico { display: none; }
-.sraik-player .sp-ripple.is-soft .sp-ripple-txt {
-	padding: 6px 12px;
+.sraik-player .sp-ripple-txt {
+	padding: 7px 12px;
 	border-radius: 999px;
-	background: rgba(9, 9, 11, .78);
+	background: var(--sp-glass);
+	box-shadow: inset 0 0 0 1px var(--sp-line-2);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
 }
 
-/* ─────────────── bottom bar ─────────────── */
+/* Button / keyboard skips: just the pill, no sweep. */
+.sraik-player .sp-ripple.is-soft { background: transparent; }
+.sraik-player .sp-ripple.is-soft .sp-ico { display: none; }
+
+/* ─────────────── bottom dock ─────────────── */
 
 .sraik-player .sp-bar {
 	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	left: var(--sp-inset);
+	right: var(--sp-inset);
+	bottom: var(--sp-inset);
 	z-index: 8;
-	padding: 0 10px 6px;
+	padding: 2px 6px 4px;
+	border-radius: 14px;
+	background: var(--sp-glass);
+	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .07), inset 0 0 0 1px var(--sp-line), 0 18px 40px -12px rgba(0, 0, 0, .6);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
 	opacity: 0;
 	visibility: hidden;
-	transition: opacity .22s ease, visibility .22s ease;
+	transform: translateY(6px);
+	transition: opacity .22s var(--sp-ease), visibility .22s var(--sp-ease), transform .22s var(--sp-ease);
 }
 
 .sraik-player.sp-ui .sp-bar,
@@ -373,6 +440,7 @@
 .sraik-player.sp-menu-open .sp-bar {
 	opacity: 1;
 	visibility: visible;
+	transform: none;
 }
 
 .sraik-player .sp-progress {
@@ -380,7 +448,7 @@
 	display: flex;
 	align-items: center;
 	height: 22px;
-	margin: 0 6px;
+	margin: 0 8px;
 	cursor: pointer;
 	touch-action: none;
 	outline: none;
@@ -392,13 +460,13 @@
 	position: relative;
 	flex: 1 1 auto;
 	height: 4px;
-	border-radius: 3px;
-	background: rgba(255, 255, 255, .24);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, .14);
 	overflow: hidden;
-	transition: height .15s ease;
+	transition: height .15s var(--sp-ease);
 }
 
-.sraik-player .sp-progress:focus-visible .sp-track { outline: 2px solid #fff; outline-offset: 3px; }
+.sraik-player .sp-progress:focus-visible .sp-track { outline: 2px solid var(--sp-lime); outline-offset: 4px; }
 .sraik-player.sp-dragging .sp-track { height: 6px; }
 
 .sraik-player .sp-buffer,
@@ -408,44 +476,52 @@
 	bottom: 0;
 	left: 0;
 	width: 0;
+	border-radius: 999px;
 }
 
-.sraik-player .sp-buffer { background: rgba(255, 255, 255, .34); }
-.sraik-player .sp-played { background: #C8102E; }
+.sraik-player .sp-buffer { background: rgba(255, 255, 255, .28); }
+.sraik-player .sp-played { background: var(--sp-lime); box-shadow: 0 0 10px rgba(198, 255, 61, .45); }
 
 .sraik-player .sp-thumb {
 	position: absolute;
 	top: 50%;
 	left: 0;
-	width: 14px;
-	height: 14px;
-	margin: -7px 0 0 -7px;
+	width: 12px;
+	height: 12px;
+	margin: -6px 0 0 -6px;
 	border-radius: 50%;
-	background: #C8102E;
+	background: #fff;
+	box-shadow: 0 0 0 4px rgba(198, 255, 61, .22), 0 0 14px 2px rgba(198, 255, 61, .55);
 	transform: scale(0);
-	transition: transform .15s ease;
+	transition: transform .15s var(--sp-ease);
 	pointer-events: none;
 }
 
 .sraik-player.sp-touch .sp-thumb,
 .sraik-player.sp-dragging .sp-thumb { transform: scale(1); }
+.sraik-player.sp-touch .sp-thumb { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
 
 .sraik-player .sp-tip {
 	position: absolute;
 	bottom: 100%;
 	left: 0;
-	margin-bottom: 4px;
-	padding: 5px 8px;
-	border-radius: 6px;
-	background: rgba(9, 9, 11, .92);
-	font-size: 12px;
-	font-weight: 600;
+	margin-bottom: 8px;
+	padding: 6px 9px;
+	border-radius: 8px;
+	background: rgba(14, 15, 17, .94);
+	box-shadow: inset 0 0 0 1px var(--sp-line-2), 0 10px 24px rgba(0, 0, 0, .5);
+	color: var(--sp-t1);
+	font-family: var(--sp-mono);
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: .02em;
+	line-height: 1;
 	font-variant-numeric: tabular-nums;
 	white-space: nowrap;
 	transform: translateX(-50%);
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity .12s ease;
+	transition: opacity .12s var(--sp-ease);
 }
 
 .sraik-player .sp-progress.is-tip .sp-tip { opacity: 1; }
@@ -463,34 +539,48 @@
 	display: flex;
 	flex: 0 0 auto;
 	align-items: center;
-	gap: 5px;
+	gap: 6px;
 	padding: 0 8px;
-	font-size: 13px;
+	font-family: var(--sp-mono);
+	font-size: 12.5px;
 	font-weight: 500;
+	letter-spacing: .02em;
 	font-variant-numeric: tabular-nums;
 	white-space: nowrap;
-	color: rgba(255, 255, 255, .95);
+	color: var(--sp-t1);
 }
 
-.sraik-player .sp-sep { opacity: .55; }
+.sraik-player .sp-sep { color: #4a4b50; }
+.sraik-player .sp-dur { color: var(--sp-t3); }
 .sraik-player .sp-spacer { flex: 1 1 auto; min-width: 4px; }
 
-/* Subtitles on: crimson underline, like a pressed key. */
+/* Subtitles on: a teal key-light under the icon. */
 .sraik-player .sp-ccb::after {
 	content: "";
 	position: absolute;
-	left: 10px;
-	right: 10px;
-	bottom: 6px;
-	height: 2.5px;
+	left: 11px;
+	right: 11px;
+	bottom: 5px;
+	height: 2px;
 	border-radius: 2px;
-	background: #C8102E;
+	background: var(--sp-teal);
+	box-shadow: 0 0 8px 1px rgba(110, 231, 210, .6);
 	transform: scaleX(0);
-	transition: transform .15s ease;
+	transition: transform .15s var(--sp-ease);
 }
 
+.sraik-player.sp-cc-on .sp-ccb { color: var(--sp-teal); }
 .sraik-player.sp-cc-on .sp-ccb::after { transform: scaleX(1); }
-.sraik-player.sp-cc-none .sp-ccb { opacity: .45; }
+.sraik-player.sp-cc-none .sp-ccb { opacity: .4; }
+
+/* Settings open: the gear becomes a pressed glossy chip. */
+.sraik-player .sp-setb .sp-ico { transition: transform .3s var(--sp-ease); }
+.sraik-player .sp-setb[aria-expanded="true"] {
+	background: var(--sp-gloss);
+	box-shadow: var(--sp-gloss-sh);
+	color: var(--sp-teal);
+}
+.sraik-player .sp-setb[aria-expanded="true"] .sp-ico { transform: rotate(45deg); }
 
 /* ─────────────── volume ─────────────── */
 
@@ -514,7 +604,7 @@
 	cursor: pointer;
 	touch-action: none;
 	outline: none;
-	transition: width .2s ease, opacity .2s ease, margin .2s ease;
+	transition: width .2s var(--sp-ease), opacity .2s var(--sp-ease), margin .2s var(--sp-ease);
 }
 
 .sraik-player:not(.sp-touch) .sp-vol:hover .sp-volume,
@@ -541,8 +631,8 @@
 	flex: 1 1 auto;
 	height: 4px;
 	margin: 0 6px;
-	border-radius: 2px;
-	background: rgba(255, 255, 255, .28);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, .14);
 }
 
 .sraik-player .sp-vfill {
@@ -551,8 +641,8 @@
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	border-radius: 2px;
-	background: #fff;
+	border-radius: 999px;
+	background: var(--sp-t1);
 }
 
 .sraik-player .sp-vthumb {
@@ -564,9 +654,10 @@
 	margin: -6px 0 0 -6px;
 	border-radius: 50%;
 	background: #fff;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .45);
 }
 
-.sraik-player .sp-volume:focus-visible .sp-vtrack { outline: 2px solid #fff; outline-offset: 4px; }
+.sraik-player .sp-volume:focus-visible .sp-vtrack { outline: 2px solid var(--sp-lime); outline-offset: 4px; }
 
 .sraik-player.sp-ios .sp-volume { display: none; }
 
@@ -574,23 +665,34 @@
 
 .sraik-player .sp-menu {
 	position: absolute;
-	right: 10px;
-	bottom: 62px;
+	right: var(--sp-inset);
+	bottom: 92px;
 	z-index: 9;
 	display: none;
-	width: 250px;
+	width: 264px;
 	max-width: calc(100% - 20px);
-	max-height: calc(100% - 76px);
+	max-height: calc(100% - 104px);
 	padding: 6px;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	-webkit-overflow-scrolling: touch;
-	border: 1px solid rgba(255, 255, 255, .08);
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, .18) transparent;
+	border: 1px solid var(--sp-line-2);
 	border-radius: 12px;
-	background: rgba(18, 18, 20, .97);
+	background: rgba(14, 15, 17, .9);
+	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .06), 0 24px 48px -12px rgba(0, 0, 0, .75);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	transform-origin: 100% 100%;
 }
 
-.sraik-player.sp-menu-open .sp-menu { display: block; }
+.sraik-player.sp-menu-open .sp-menu { display: block; animation: sp-pop .16s var(--sp-ease); }
+
+@keyframes sp-pop {
+	from { opacity: 0; transform: translateY(6px) scale(.98); }
+	to { opacity: 1; transform: none; }
+}
 
 .sraik-player .sp-mi {
 	display: flex;
@@ -600,32 +702,57 @@
 	min-height: 42px;
 	padding: 8px 10px;
 	border-radius: 8px;
-	color: #F4F4F5;
+	color: var(--sp-t1);
 	font-size: 14px;
 	text-align: left;
+	transition: background-color .12s var(--sp-ease), color .12s var(--sp-ease);
 }
 
-.sraik-player .sp-mi .sp-ico { flex: 0 0 18px; width: 18px; height: 18px; }
+.sraik-player .sp-mi .sp-ico { flex: 0 0 16px; width: 16px; height: 16px; }
+.sraik-player .sp-mi .i-next,
+.sraik-player .sp-mi .i-prev { color: var(--sp-t3); }
 .sraik-player .sp-ml { flex: 1 1 auto; }
-.sraik-player .sp-mv { color: #A1A1AA; font-size: 13px; white-space: nowrap; }
+
+.sraik-player .sp-mv {
+	padding: 4px 8px;
+	border-radius: 6px;
+	background: var(--sp-s2);
+	box-shadow: inset 0 0 0 1px var(--sp-line);
+	color: var(--sp-t2);
+	font-family: var(--sp-mono);
+	font-size: 11.5px;
+	letter-spacing: .02em;
+	line-height: 1.2;
+	white-space: nowrap;
+}
 
 .sraik-player .sp-mhead {
-	margin-bottom: 4px;
-	border-bottom: 1px solid rgba(255, 255, 255, .08);
+	margin-bottom: 6px;
+	border-bottom: 1px solid var(--sp-line);
 	border-radius: 8px 8px 0 0;
+	color: var(--sp-t2);
+	font-family: var(--sp-mono);
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.sraik-player .sp-opt { color: var(--sp-t2); }
+.sraik-player .sp-opt .i-check { visibility: hidden; color: var(--sp-lime); }
+.sraik-player .sp-opt[aria-checked="true"] .i-check { visibility: visible; }
+.sraik-player .sp-opt[aria-checked="true"] {
+	background: rgba(198, 255, 61, .07);
+	color: var(--sp-t1);
 	font-weight: 600;
 }
 
-.sraik-player .sp-opt .i-check { visibility: hidden; color: #C8102E; }
-.sraik-player .sp-opt[aria-checked="true"] .i-check { visibility: visible; }
-.sraik-player .sp-opt[aria-checked="true"] { color: #fff; font-weight: 600; }
-
 .sraik-player .sp-mnote {
-	margin: 0;
+	margin: 2px 0 0;
 	padding: 10px;
-	color: #A1A1AA;
-	font-size: 13px;
-	line-height: 1.4;
+	color: var(--sp-t3);
+	font-size: 12.5px;
+	line-height: 1.5;
 }
 
 /* ─────────────── toast / error ─────────────── */
@@ -635,10 +762,17 @@
 	top: 14px;
 	left: 50%;
 	z-index: 10;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	max-width: calc(100% - 32px);
-	padding: 8px 14px;
+	padding: 8px 14px 8px 12px;
 	border-radius: 999px;
-	background: rgba(9, 9, 11, .88);
+	background: var(--sp-glass);
+	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .07), inset 0 0 0 1px var(--sp-line-2), 0 12px 28px rgba(0, 0, 0, .45);
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+	color: var(--sp-t1);
 	font-size: 13px;
 	font-weight: 500;
 	white-space: nowrap;
@@ -648,7 +782,17 @@
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+	transition: opacity .18s var(--sp-ease), transform .18s var(--sp-ease), visibility .18s var(--sp-ease);
+}
+
+.sraik-player .sp-toast::before {
+	content: "";
+	flex: none;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--sp-lime);
+	box-shadow: 0 0 8px 1px rgba(198, 255, 61, .55);
 }
 
 .sraik-player .sp-toast.is-on { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
@@ -658,13 +802,33 @@
 	top: 0; right: 0; bottom: 0; left: 0;
 	z-index: 11;
 	display: none;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	gap: 14px;
 	padding: 24px;
-	background: rgba(0, 0, 0, .84);
+	background:
+		radial-gradient(ellipse at 50% 40%, rgba(22, 23, 26, .9) 0, rgba(7, 8, 10, .94) 70%);
+	color: var(--sp-t1);
 	font-size: 14px;
 	line-height: 1.5;
 	text-align: center;
+}
+
+.sraik-player .sp-error::before {
+	content: "!";
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: linear-gradient(180deg, #2a2c32 0%, #131418 100%);
+	box-shadow: var(--sp-gloss-sh);
+	color: var(--sp-red);
+	font-family: var(--sp-mono);
+	font-size: 17px;
+	font-weight: 600;
 }
 
 .sraik-player.sp-has-error .sp-error { display: flex; }
@@ -696,12 +860,16 @@
 .sraik-player.sp-portrait { aspect-ratio: 9 / 16; }
 
 .sraik-player.sp-fs {
+	--sp-inset: 16px;
 	width: 100%;
 	height: 100%;
 	max-height: none;
 	aspect-ratio: auto;
 	border-radius: 0;
+	background: #000;
 }
+
+.sraik-player.sp-fs::after { display: none; }
 
 .sraik-player.sp-fs .sp-stage {
 	top: 50%;
@@ -756,10 +924,22 @@ html.sraik-player-lock,
 html.sraik-player-lock body { overflow: hidden; }
 
 .sraik-player.sp-fs .sp-bar {
-	padding: 0 calc(12px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(12px + env(safe-area-inset-left, 0px));
+	left: calc(var(--sp-inset) + env(safe-area-inset-left, 0px));
+	right: calc(var(--sp-inset) + env(safe-area-inset-right, 0px));
+	bottom: calc(var(--sp-inset) + env(safe-area-inset-bottom, 0px));
+	padding: 4px 10px 6px;
+	border-radius: 16px;
 }
 
-.sraik-player.sp-fs .sp-menu { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+.sraik-player.sp-fs .sp-row { height: 48px; }
+
+.sraik-player.sp-fs .sp-menu {
+	right: calc(var(--sp-inset) + env(safe-area-inset-right, 0px));
+	bottom: calc(108px + env(safe-area-inset-bottom, 0px));
+	max-height: calc(100% - 124px);
+}
+
+.sraik-player.sp-fs .sp-toast { top: calc(18px + env(safe-area-inset-top, 0px)); }
 
 .sraik-player.sp-fs.sp-playing:not(.sp-ui),
 .sraik-player.sp-fs.sp-playing:not(.sp-ui) .sp-shield { cursor: none; }
@@ -767,10 +947,18 @@ html.sraik-player-lock body { overflow: hidden; }
 /* ─────────────── pointer-specific hover ─────────────── */
 
 @media (hover: hover) {
-	.sraik-player .sp-row .sp-btn:hover { background: rgba(255, 255, 255, .12); }
-	.sraik-player .sp-big:hover { background: #E01A3A; }
-	.sraik-player .sp-cskip:hover { background: rgba(0, 0, 0, .6); }
-	.sraik-player .sp-mi:hover { background: rgba(255, 255, 255, .08); }
+	.sraik-player .sp-row .sp-btn:hover {
+		background: var(--sp-gloss);
+		box-shadow: var(--sp-gloss-sh);
+	}
+	.sraik-player .sp-big:hover {
+		background: var(--sp-lime-hi);
+		box-shadow: 0 0 0 14px rgba(198, 255, 61, .12), 0 16px 40px rgba(0, 0, 0, .5);
+		transform: scale(1.06);
+	}
+	.sraik-player .sp-cskip:hover { background: rgba(22, 23, 26, .72); }
+	.sraik-player .sp-mi:hover { background: rgba(255, 255, 255, .06); color: var(--sp-t1); }
+	.sraik-player .sp-mi:hover .i-next { color: var(--sp-t1); }
 	.sraik-player .sp-progress:hover .sp-thumb { transform: scale(1); }
 	.sraik-player .sp-progress:hover .sp-track { height: 6px; }
 }
@@ -778,55 +966,87 @@ html.sraik-player-lock body { overflow: hidden; }
 /* ─────────────── compact (phones, narrow columns) ─────────────── */
 
 @container (max-width: 560px) {
-	.sraik-player .sp-bar { padding: 0 6px 4px; }
-	.sraik-player .sp-row { height: 40px; }
-	.sraik-player .sp-btn { width: 38px; height: 38px; }
+	.sraik-player { --sp-inset: 6px; }
+	.sraik-player .sp-bar { padding: 0 4px 2px; border-radius: 12px; }
+	.sraik-player .sp-progress { margin: 0 9px; }
+	.sraik-player .sp-row { height: 40px; gap: 0; }
 	.sraik-player .sp-skip { display: none; }
-	.sraik-player .sp-time { padding: 0 6px; font-size: 12px; }
+	.sraik-player .sp-time { padding: 0 6px; gap: 4px; font-size: 11.5px; letter-spacing: 0; }
 	.sraik-player.sp-vol-open .sp-time,
 	.sraik-player:not(.sp-touch) .sp-vol:hover ~ .sp-time,
 	.sraik-player .sp-vol.is-active ~ .sp-time { display: none; }
-	.sraik-player .sp-menu { right: 6px; bottom: 52px; width: 230px; max-height: calc(100% - 64px); }
-	.sraik-player .sp-mi { min-height: 38px; padding: 6px 10px; font-size: 13px; }
+	/* Short frames: while the menu is open the scrubber steps aside so the menu gets the height. */
+	.sraik-player.sp-menu-open .sp-progress { display: none; }
+	.sraik-player.sp-menu-open .sp-bar { padding-top: 2px; }
+	.sraik-player .sp-menu { bottom: 56px; width: 236px; max-width: calc(100% - 12px); max-height: calc(100% - 62px); padding: 4px; }
+	.sraik-player .sp-mi { min-height: 40px; padding: 6px 10px; font-size: 13px; }
+	.sraik-player .sp-mhead { font-size: 11px; }
+	.sraik-player .sp-mnote { padding: 8px 10px; font-size: 12px; }
 	.sraik-player .sp-center { gap: 26px; }
-	.sraik-player .sp-big { width: 60px; height: 60px; }
-	.sraik-player .sp-cskip { width: 46px; height: 46px; }
+	.sraik-player .sp-center { margin-top: -36px; }
+	.sraik-player .sp-spinner { width: 40px; height: 40px; margin: -56px 0 0 -20px; }
+	.sraik-player .sp-big { width: 56px; height: 56px; box-shadow: 0 0 0 7px rgba(198, 255, 61, .14), 0 12px 32px rgba(0, 0, 0, .5); }
+	.sraik-player .sp-big .sp-ico { flex-basis: 24px; width: 24px; height: 24px; }
+	.sraik-player .sp-cskip { width: 44px; height: 44px; }
+	.sraik-player .sp-cskip .sp-ico { flex-basis: 26px; width: 26px; height: 26px; }
+	.sraik-player .sp-cskip .sp-num { font-size: 8.5px; }
 	.sraik-player.sp-ui .sp-center { opacity: 1; visibility: visible; }
 	.sraik-player.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
-	.sraik-player .sp-toast { top: 10px; font-size: 12px; }
+	.sraik-player .sp-toast { top: 10px; padding: 7px 12px 7px 10px; font-size: 12px; }
 }
 
+/* Very narrow: icons shrink a touch, every target stays 40px. */
 @container (max-width: 380px) {
-	.sraik-player .sp-btn { width: 34px; height: 34px; }
-	.sraik-player .sp-ico { flex-basis: 22px; width: 22px; height: 22px; }
-	.sraik-player .sp-time { padding: 0 4px; gap: 3px; font-size: 11.5px; }
-	.sraik-player .sp-center { gap: 20px; }
-	.sraik-player .sp-big { width: 54px; height: 54px; }
-	.sraik-player .sp-big .sp-ico { flex-basis: 26px; width: 26px; height: 26px; }
+	.sraik-player .sp-ico { flex-basis: 20px; width: 20px; height: 20px; }
+	.sraik-player .sp-time { padding: 0 4px; gap: 3px; font-size: 11px; }
+	.sraik-player .sp-center { gap: 22px; }
+	.sraik-player .sp-big { width: 52px; height: 52px; }
+	.sraik-player .sp-big .sp-ico { flex-basis: 22px; width: 22px; height: 22px; }
 	.sraik-player .sp-cskip { width: 42px; height: 42px; }
-	.sraik-player .sp-cskip .sp-ico { flex-basis: 26px; width: 26px; height: 26px; }
-	.sraik-player .sp-cskip .sp-num { font-size: 9.5px; }
+	.sraik-player .sp-cskip .sp-ico { flex-basis: 24px; width: 24px; height: 24px; }
+	.sraik-player .sp-cskip .sp-num { font-size: 8px; }
+}
+
+/* Columns narrower than a phone (sidebars): the only place targets go below 40px. */
+@container (max-width: 300px) {
+	.sraik-player .sp-btn { width: 36px; height: 36px; }
+	.sraik-player .sp-row { height: 38px; }
+	.sraik-player .sp-menu { bottom: 52px; max-height: calc(100% - 58px); }
+	.sraik-player .sp-spinner { margin-top: -54px; }
+	.sraik-player .sp-big { width: 50px; height: 50px; box-shadow: 0 0 0 6px rgba(198, 255, 61, .14), 0 10px 24px rgba(0, 0, 0, .5); }
+	.sraik-player .sp-center { margin-top: -34px; }
 }
 
 /* Browsers without container queries: same rules by viewport. */
 @supports not (container-type: inline-size) {
 	@media (max-width: 600px) {
-		.sraik-player .sp-bar { padding: 0 6px 4px; }
-		.sraik-player .sp-row { height: 40px; }
-		.sraik-player .sp-btn { width: 38px; height: 38px; }
+		.sraik-player { --sp-inset: 6px; }
+		.sraik-player .sp-bar { padding: 0 4px 2px; border-radius: 12px; }
+		.sraik-player .sp-progress { margin: 0 9px; }
+		.sraik-player .sp-row { height: 40px; gap: 0; }
 		.sraik-player .sp-skip { display: none; }
-		.sraik-player .sp-time { padding: 0 6px; font-size: 12px; }
+		.sraik-player .sp-time { padding: 0 6px; gap: 4px; font-size: 11.5px; letter-spacing: 0; }
 		.sraik-player.sp-vol-open .sp-time,
 		.sraik-player:not(.sp-touch) .sp-vol:hover ~ .sp-time,
 		.sraik-player .sp-vol.is-active ~ .sp-time { display: none; }
-		.sraik-player .sp-menu { right: 6px; bottom: 52px; width: 230px; max-height: calc(100% - 64px); }
-		.sraik-player .sp-mi { min-height: 38px; padding: 6px 10px; font-size: 13px; }
-		.sraik-player .sp-center { gap: 26px; }
-		.sraik-player .sp-big { width: 60px; height: 60px; }
-		.sraik-player .sp-cskip { width: 46px; height: 46px; }
+		.sraik-player.sp-menu-open .sp-progress { display: none; }
+		.sraik-player .sp-menu { bottom: 56px; width: 236px; max-width: calc(100% - 12px); max-height: calc(100% - 62px); padding: 4px; }
+		.sraik-player .sp-mi { min-height: 40px; padding: 6px 10px; font-size: 13px; }
+		.sraik-player .sp-center { gap: 28px; margin-top: -36px; }
+		.sraik-player .sp-spinner { margin-top: -58px; }
+		.sraik-player .sp-big { width: 56px; height: 56px; }
+		.sraik-player .sp-cskip { width: 44px; height: 44px; }
 		.sraik-player.sp-ui .sp-center { opacity: 1; visibility: visible; }
 		.sraik-player.sp-started:not(.sp-ended) .sp-cskip { display: inline-flex; }
 	}
+}
+
+/* No backdrop blur (older Firefox / low-power modes): go more opaque instead. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+	.sraik-player .sp-bar,
+	.sraik-player .sp-toast,
+	.sraik-player .sp-ripple-txt { background: rgba(7, 8, 10, .9); }
+	.sraik-player .sp-menu { background: rgba(14, 15, 17, .98); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -834,10 +1054,19 @@ html.sraik-player-lock body { overflow: hidden; }
 	.sraik-player .sp-scrim,
 	.sraik-player .sp-bar,
 	.sraik-player .sp-center,
+	.sraik-player .sp-btn,
+	.sraik-player .sp-setb .sp-ico,
+	.sraik-player .sp-mi,
 	.sraik-player .sp-ripple,
 	.sraik-player .sp-toast,
 	.sraik-player .sp-thumb,
-	.sraik-player .sp-track { transition: none; }
+	.sraik-player .sp-track,
+	.sraik-player .sp-ccb::after,
+	.sraik-player .sp-volume { transition: none; }
+	.sraik-player .sp-bar { transform: none; }
+	.sraik-player.sp-menu-open .sp-menu { animation: none; }
+	.sraik-player .sp-big:hover { transform: none; }
+	.sraik-player .sp-spinner { animation-duration: 1.6s; }
 }
 
 /* Settings menu open: the centre cluster steps back (after every rule that shows it). */

@@ -82,6 +82,29 @@ The SRAIK Player lives in `sraik-templates/assets/player/`, exactly where the
 old site loaded it from. If vip.sraik.com loads the player from its own copy,
 copy the four `assets/player/*` files there as well.
 
+### After deploying
+
+* **Real cron for /status/** — WP-Cron only runs on visits. In hPanel → Advanced →
+  Cron Jobs add (every 5 minutes):
+  `wget -q -O - https://sraik.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1`
+* **Cloudflare**: don't cache `/status/` longer than ~5 minutes (the page sends
+  `Cache-Control: max-age=60`).
+* `/status/` says "Status check in progress" until the first checks have run.
+
+## Publishing changelog entries and incidents
+
+* **Changelog** — Posts → Add New → category **Changelog**. Title, optional
+  excerpt, body = a short paragraph + a bullet list. Optional custom fields:
+  `version` (e.g. `3.1`) and `label` (e.g. `Feature`); a tag like `v3.1` also
+  sets the version.
+* **Incident** — Posts → Add New → category **Incidents**. Excerpt = one-line
+  summary; body = one Heading 3 per update ("Resolved · 14:48") followed by a
+  paragraph, newest first. Custom fields: `severity` (`minor` / `major` /
+  `maintenance`), `affected` (e.g. `vip.sraik.com · Payment gateway`),
+  `duration` (e.g. `43 min`).
+
+Both categories are kept off `/blog/` and the archives automatically.
+
 ## Editing
 
 * Words: `inc/content/<page>.php` (plain PHP arrays, Bengali and English).
